@@ -37,17 +37,23 @@
 
     <!-- TAB SWITCHER -->
     <div class="flex space-x-2 mt-3 sm:mt-0 flex-wrap gap-y-2">
-      <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="px-4 py-2 text-sm font-medium rounded-lg transition bg-purple-600 text-white shadow-md">
-        <i class="fa-solid fa-gauge mr-2"></i>Dashboard & Procedimentos
+      <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="px-3 py-2 text-xs font-medium rounded-lg transition bg-purple-600 text-white shadow-md">
+        <i class="fa-solid fa-gauge mr-1.5"></i>Dashboard
       </button>
-      <button onclick="switchTab('quiz')" id="btn-tab-quiz" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-300 hover:bg-slate-800 transition">
-        <i class="fa-solid fa-graduation-cap mr-2"></i>Quiz & Ranking
+      <button onclick="switchTab('jogo-responsavel')" id="btn-tab-jogo-responsavel" class="px-3 py-2 text-xs font-medium rounded-lg text-red-400 hover:bg-red-950/40 transition border border-red-500/30">
+        <i class="fa-solid fa-shield-halved mr-1.5"></i>Jogo Responsável & COMPULSAFE
       </button>
-      <button onclick="switchTab('avisos')" id="btn-tab-avisos" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-300 hover:bg-slate-800 transition border border-cyan-500/30 text-cyan-400">
-        <i class="fa-solid fa-bullhorn mr-2"></i>Mural de Avisos
+      <button onclick="switchTab('portaria')" id="btn-tab-portaria" class="px-3 py-2 text-xs font-medium rounded-lg text-amber-400 hover:bg-amber-950/40 transition border border-amber-500/30">
+        <i class="fa-solid fa-book-bookmark mr-1.5"></i>Regulamentações & BCB
       </button>
-      <button onclick="switchTab('admin')" id="btn-tab-admin" class="px-4 py-2 text-sm font-medium rounded-lg text-amber-400 hover:bg-amber-400/10 transition border border-amber-500/30">
-        <i class="fa-solid fa-lock mr-2"></i>Área do Admin
+      <button onclick="switchTab('quiz')" id="btn-tab-quiz" class="px-3 py-2 text-xs font-medium rounded-lg text-slate-300 hover:bg-slate-800 transition">
+        <i class="fa-solid fa-graduation-cap mr-1.5"></i>Quiz & Ranking
+      </button>
+      <button onclick="switchTab('avisos')" id="btn-tab-avisos" class="px-3 py-2 text-xs font-medium rounded-lg text-cyan-400 hover:bg-slate-800 transition border border-cyan-500/30">
+        <i class="fa-solid fa-bullhorn mr-1.5"></i>Mural
+      </button>
+      <button onclick="switchTab('admin')" id="btn-tab-admin" class="px-3 py-2 text-xs font-medium rounded-lg text-amber-400 hover:bg-amber-400/10 transition border border-amber-500/30">
+        <i class="fa-solid fa-lock mr-1.5"></i>Admin
       </button>
     </div>
   </nav>
@@ -57,8 +63,6 @@
 
     <!-- ==================== TAB 1: DASHBOARD DE PROCEDIMENTOS ==================== -->
     <section id="tab-dashboard" class="space-y-6">
-      
-      <!-- HEADER METRICS -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div class="card-dark p-5 rounded-xl border-l-4 border-l-purple-500">
           <p class="text-xs text-slate-400 uppercase font-semibold">Migração & Histórico</p>
@@ -82,171 +86,214 @@
         </div>
       </div>
 
-      <!-- GUIA DE INTERPRETAÇÃO DO PAINEL DE BKO -->
       <div class="card-dark p-6 rounded-xl border border-slate-800 purple-glow">
         <h2 class="text-lg font-bold text-white mb-4 flex items-center">
           <i class="fa-solid fa-display text-purple-400 mr-2"></i>Guia de Avaliação de Módulos (BKO / Sistema)
         </h2>
-        
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="p-4 bg-slate-900/60 rounded-lg border border-slate-800">
             <h4 class="font-bold text-purple-400 text-sm mb-2"><i class="fa-solid fa-user-shield mr-2"></i>Operações Permitidas & SIGAP</h4>
             <p class="text-xs text-slate-300 leading-relaxed">
-              Verifique se consta <strong>"Sem restrições SIGAP"</strong>. Se houver flags ativas em vermelho ou restrição por Jogo Responsável/Ludopatia no SIGAP ou <strong>COMPULSAFE</strong>, o saldo/saque deve permanecer travado.
+              Verifique o card <strong>"Restrições SIGAP"</strong> na Single. Se o campo <em>Operações</em> estiver Desbloqueado (Bolsa Família/BPC), o cliente opera normal. Se estiver Bloqueado, siga o fluxo de encerramento.
             </p>
           </div>
-
           <div class="p-4 bg-slate-900/60 rounded-lg border border-slate-800">
             <h4 class="font-bold text-emerald-400 text-sm mb-2"><i class="fa-solid fa-wallet mr-2"></i>Carteira & Transacional</h4>
             <p class="text-xs text-slate-300 leading-relaxed">
               Cruze o <strong>Saldo Total</strong> contra o volume de <strong>Total de Depósitos vs. Saques</strong>. Confira os horários dos últimos saques para evitar concorrência transacional no gateway.
             </p>
           </div>
-
-          <div class="p-4 bg-slate-900/60 rounded-lg border border-slate-800">
-            <h4 class="font-bold text-amber-400 text-sm mb-2"><i class="fa-solid fa-gift mr-2"></i>Carteira de Bônus & Rollover</h4>
-            <p class="text-xs text-slate-300 leading-relaxed">
-              Monitore o <strong>Status do Bônus</strong> e a meta de <strong>Alvo de Rolagem vs. Realizado</strong>. Se houver divergência ou saque precoce, audite a conta antes de qualquer liberação.
-            </p>
-          </div>
-
-          <div class="p-4 bg-slate-900/60 rounded-lg border border-slate-800">
-            <h4 class="font-bold text-blue-400 text-sm mb-2"><i class="fa-solid fa-gamepad mr-2"></i>Apostas, GGR & Categorias</h4>
-            <p class="text-xs text-slate-300 leading-relaxed">
-              Confira GGR e Margem. Lembre-se: ⚠️ <strong>GOAL</strong> e <strong>MINES</strong> são jogos do tipo <em>Crash</em>, mas podem aparecer incorretamente categorizados como <em>Slots</em> no painel!
-            </p>
-          </div>
         </div>
       </div>
+    </section>
 
-      <!-- PROCEDIMENTOS DETALHADOS (BLOCOS 1 E 2) -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-        <!-- BLOCO 1: IR & DELEÇÃO + CPF RESTRIÇÕES -->
-        <div class="card-dark p-6 rounded-xl space-y-4">
-          <h3 class="font-bold text-white text-base border-b border-slate-800 pb-3 flex items-center">
-            <i class="fa-solid fa-file-invoice-dollar text-emerald-400 mr-2"></i>1. Relatório de IR & Trativa de CPF Restrito
-          </h3>
-
-          <div class="space-y-3">
-            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Extração de IR (Contas sob Deleção)</h4>
-            <ol class="text-xs text-slate-300 space-y-1.5 list-decimal list-inside bg-slate-900/40 p-3 rounded-lg border border-slate-800">
-              <li>Acesse a aba <strong>Extrato</strong> > Clique no botão <strong>Relatório de IR</strong>.</li>
-              <li>Insira o ano fiscal desejado (Exemplo: <code>2025</code>).</li>
-              <li>Clique em <strong>Nova Solicitação</strong> e aguarde a extração carregar.</li>
-              <li>Recarregue a página, vá em <strong>Ações</strong> e efetue o download.</li>
-            </ol>
-          </div>
-
-          <div class="space-y-3">
-            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Passo a Passo: Documento Restrito (Singles)</h4>
-            <div class="space-y-2 text-xs">
-              <div class="p-2.5 bg-slate-900/60 rounded border-l-2 border-l-purple-500">
-                <strong>Passo 1:</strong> Verificar pendências fiscais do cliente na Receita Federal.
-              </div>
-              <div class="p-2.5 bg-slate-900/60 rounded border-l-2 border-l-purple-500">
-                <strong>Passo 2:</strong> Checar restrições na Legitimuz (com suporte via WhatsApp se necessário).
-              </div>
-              <div class="p-2.5 bg-slate-900/60 rounded border-l-2 border-l-purple-500">
-                <strong>Passo 3:</strong> Se regular em ambos, solicitar supervisão para atualizar: <code>Usuários > Consultar CPF > Atualizar dados cadastrais</code>.
-              </div>
+    <!-- ==================== TAB 2: JOGO RESPONSÁVEL & COMPULSAFE ==================== -->
+    <section id="tab-jogo-responsavel" class="space-y-6 hidden">
+      <div class="card-dark p-6 rounded-xl border border-red-500/30">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+          <div class="flex items-center space-x-3">
+            <div class="p-3 bg-red-600/20 text-red-400 rounded-xl border border-red-500/30">
+              <i class="fa-solid fa-shield-halved text-2xl"></i>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-white">Manual Operacional de Jogo Responsável & COMPULSAFE</h2>
+              <p class="text-xs text-slate-400">Protocolos obrigatórios para prevenção à ludopatia e mitigação de danos</p>
             </div>
           </div>
+          <span class="text-xs bg-red-950 text-red-300 px-3 py-1 rounded-full border border-red-500/30">Uso Obrigatório pelo BKO</span>
         </div>
 
-        <!-- BLOCO 2: CASHBACK & LUDOPATIA & FLABET -->
-        <div class="card-dark p-6 rounded-xl space-y-4">
-          <h3 class="font-bold text-white text-base border-b border-slate-800 pb-3 flex items-center">
-            <i class="fa-solid fa-microscope text-amber-400 mr-2"></i>2. Auditoria de Cashback, Flabet & Compulsafe
-          </h3>
-
-          <div class="space-y-3">
-            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Auditoria de Cashback & Fraudes</h4>
-            <ul class="text-xs text-slate-300 space-y-1.5 list-disc list-inside bg-slate-900/40 p-3 rounded-lg border border-slate-800">
-              <li>Confira a aba <strong>Histórico de Bônus</strong> para checar concessão e uso.</li>
-              <li>Vá na seção <strong>Cassino</strong>, abra o ID da aposta e avalie a Categoria.</li>
-              <li>Atenção às exceções: <em>GOAL</em> e <em>MINES</em> são jogos de Crash.</li>
-              <li>Em caso de inconsistência: efetue o bloqueio da conta, lance na planilha e notifique o canal <code>#Bloqueio-análise</code> do Discord.</li>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="p-5 bg-slate-900/80 rounded-xl border border-slate-800 space-y-3">
+            <h3 class="font-bold text-red-400 text-sm flex items-center">
+              <i class="fa-solid fa-database mr-2"></i>1. Registro e Consulta no COMPULSAFE
+            </h3>
+            <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside">
+              <li><strong>Mapeamento Obrigatório:</strong> Todos os encerramentos, suspensões ou relatos de perda de controle financeiro/emocional devem ser registrados na base do <strong>COMPULSAFE</strong>.</li>
+              <li><strong>Contas com Movimentação Ativa:</strong> Se uma conta em bloqueio centralizado tentar efetuar movimentações, insira na planilha de acompanhamento e acione a supervisão.</li>
+              <li><strong>Trava Operacional:</strong> Apontamento ativo no COMPULSAFE inviabiliza liberação de saldo de aposta.</li>
             </ul>
           </div>
 
-          <div class="space-y-3">
-            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Alinhamentos Operacionais Flabet</h4>
-            <div class="p-3 bg-amber-950/20 border border-amber-500/30 rounded-lg text-xs space-y-1">
-              <span class="font-bold text-amber-400"><i class="fa-solid fa-arrows-rotate mr-1"></i>Flabet & Legitimuz (Loop):</span>
-              <p class="text-slate-300">Não repassar a data limite de 07/04/2024 ao cliente. Em caso de loop de validação com Legitimuz ok, solicitar liberação no Skype da Flabet (ou acionar a supervisão).</p>
+          <div class="p-5 bg-slate-900/80 rounded-xl border border-slate-800 space-y-3">
+            <h3 class="font-bold text-emerald-400 text-sm flex items-center">
+              <i class="fa-solid fa-user-doctor mr-2"></i>2. Atendimento & Suporte Psicológico (EBAC)
+            </h3>
+            <div class="text-xs text-slate-300 space-y-2">
+              <p>O atendimento ao cliente deve acolher e direcionar o apostador para o suporte gratuito e confidencial oferecido via EBAC.</p>
+              <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 font-mono text-[11px] text-cyan-300 space-y-1">
+                <p>• Pixbet: <a href="https://ebacbrasil.com.br/pixbet/" target="_blank" class="underline">ebacbrasil.com.br/pixbet/</a></p>
+                <p>• GanheiBet: <a href="https://ebacbrasil.com.br/ganheibet/" target="_blank" class="underline">ebacbrasil.com.br/ganheibet/</a></p>
+                <p>• Bet dá Sorte: <a href="https://ebacbrasil.com.br/betdasorte/" target="_blank" class="underline">ebacbrasil.com.br/betdasorte/</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: REGULAMENTAÇÕES, SIGAP & BCB 766/2026 ==================== -->
+    <section id="tab-portaria" class="space-y-6 hidden">
+      
+      <!-- CARD 1: INSTRUÇÃO NORMATIVA BCB Nº 766/2026 (CLIPPING REGULATÓRIO Z.RO) -->
+      <div class="card-dark p-6 rounded-xl border border-blue-500/40 purple-glow">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+          <div class="flex items-center space-x-3">
+            <div class="p-3 bg-blue-600/20 text-blue-400 rounded-xl border border-blue-500/30">
+              <i class="fa-solid fa-file-contract text-2xl"></i>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-white">Clipping Regulatório Z.ro Global Payments</h2>
+              <p class="text-xs text-blue-400 font-semibold">Instrução Normativa BCB nº 766/2026 — Atualizações das Regras do Pix e DICT</p>
+            </div>
+          </div>
+          <span class="text-xs bg-blue-950 text-blue-300 px-3 py-1 rounded-full border border-blue-500/30 font-mono">BCB nº 766/2026</span>
+        </div>
+
+        <p class="text-xs text-slate-300 mb-6 leading-relaxed bg-slate-900/60 p-4 rounded-lg border border-slate-800">
+          A <strong>Instrução Normativa BCB nº 766/2026</strong> atualiza o Manual Operacional do DICT, trazendo ajustes nas regras do Pix para fortalecer os processos de devolução, contestação e rastreamento de transações. As mudanças também incluem atualizações específicas para o Pix Automático e a ampliação do prazo para contestação de devoluções para <strong>80 dias</strong>.
+        </p>
+
+        <!-- SEÇÕES EM DESTAQUE E VIGÊNCIA -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          
+          <!-- EM DESTAQUE -->
+          <div class="p-5 bg-slate-900/80 rounded-xl border border-slate-800 space-y-3">
+            <h3 class="font-bold text-amber-400 text-sm flex items-center border-b border-slate-800 pb-2">
+              <i class="fa-solid fa-bullhorn text-amber-400 mr-2"></i>Em Destaque
+            </h3>
+            <ul class="text-xs text-slate-300 space-y-2">
+              <li class="flex items-start"><i class="fa-solid fa-circle-check text-emerald-400 mr-2 mt-0.5"></i><span>Atualização das regras operacionais do DICT.</span></li>
+              <li class="flex items-start"><i class="fa-solid fa-circle-check text-emerald-400 mr-2 mt-0.5"></i><span>Ajustes nos fluxos de devolução e tratamento de fraudes e recuperação de valores (MED).</span></li>
+              <li class="flex items-start"><i class="fa-solid fa-circle-check text-emerald-400 mr-2 mt-0.5"></i><span><strong>Ampliação para 80 dias</strong> do prazo de contestação de devoluções por fraude.</span></li>
+              <li class="flex items-start"><i class="fa-solid fa-circle-check text-emerald-400 mr-2 mt-0.5"></i><span>Inclusão de novos campos para aprimorar o rastreamento de transações.</span></li>
+              <li class="flex items-start"><i class="fa-solid fa-circle-check text-emerald-400 mr-2 mt-0.5"></i><span>Adequações operacionais relacionadas ao Pix Automático.</span></li>
+            </ul>
+          </div>
+
+          <!-- CRONOGRAMA DE VIGÊNCIA -->
+          <div class="p-5 bg-slate-900/80 rounded-xl border border-slate-800 space-y-4">
+            <h3 class="font-bold text-cyan-400 text-sm flex items-center border-b border-slate-800 pb-2">
+              <i class="fa-solid fa-calendar-days text-cyan-400 mr-2"></i>Cronograma de Vigência
+            </h3>
+            
+            <div class="p-3 bg-slate-950 rounded-lg border-l-4 border-l-cyan-500 space-y-1">
+              <p class="font-bold text-cyan-300 text-xs">Vigência a partir de 01/09/2026:</p>
+              <ul class="text-xs text-slate-300 list-disc list-inside space-y-0.5 pl-1">
+                <li>Ampliação para 80 dias do prazo de contestação.</li>
+                <li>Alterações no fluxo de Recuperação de Valores (MED).</li>
+              </ul>
+            </div>
+
+            <div class="p-3 bg-slate-950 rounded-lg border-l-4 border-l-purple-500 space-y-1">
+              <p class="font-bold text-purple-300 text-xs">Vigência a partir de 26/10/2026:</p>
+              <ul class="text-xs text-slate-300 list-disc list-inside space-y-0.5 pl-1">
+                <li>Inclusão do atributo <code>TransactionDepth</code>.</li>
+                <li>Atualizações na análise da Recuperação de Valores.</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RECOMENDAÇÕES OPERACIONAIS Z.RO -->
+        <div class="p-5 bg-slate-900/60 rounded-xl border border-slate-800 space-y-3">
+          <h3 class="font-bold text-white text-xs uppercase tracking-wider flex items-center border-b border-slate-800 pb-2">
+            <i class="fa-solid fa-circle-info text-blue-400 mr-2"></i>Considerações Operacionais & Impactos Internos
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300">
+            <div class="p-3 bg-slate-950 rounded border border-slate-800 flex items-start space-x-2">
+              <i class="fa-solid fa-circle-info text-blue-400 mt-0.5 shrink-0"></i>
+              <span>Houve atualização nas regras do Pix e do DICT pelo Banco Central, com mudanças nos processos de devolução, contestação, rastreamento e tratamento de fraudes.</span>
+            </div>
+            <div class="p-3 bg-slate-950 rounded border border-slate-800 flex items-start space-x-2">
+              <i class="fa-solid fa-users text-purple-400 mt-0.5 shrink-0"></i>
+              <span>Essas alterações podem impactar a forma como as transações Pix são analisadas, contestadas e devolvidas, além de exigir atenção aos novos prazos e procedimentos operacionais.</span>
+            </div>
+            <div class="p-3 bg-slate-950 rounded border border-slate-800 flex items-start space-x-2">
+              <i class="fa-solid fa-clipboard-check text-emerald-400 mt-0.5 shrink-0"></i>
+              <span>É recomendável revisar os processos internos relacionados ao Pix, atualizar os fluxos operacionais e garantir que as equipes envolvidas estejam cientes das novas regras.</span>
+            </div>
+            <div class="p-3 bg-slate-950 rounded border border-slate-800 flex items-start space-x-2">
+              <i class="fa-solid fa-headset text-amber-400 mt-0.5 shrink-0"></i>
+              <span>Em caso de dúvidas, entre em contato com o canal de atendimento ou com o gerente de relacionamento do Z.ro Global Payments. O Z.ro Global Payments pode orientar sobre os impactos operacionais da norma, apoiar na interpretação das mudanças e indicar os ajustes necessários para adequação aos novos requisitos.</span>
             </div>
           </div>
         </div>
 
       </div>
 
-      <!-- ==================== NOVA CATEGORIA: BLOCO 3 (DIRETRIZES DE ATENDIMENTO, BLOQUEIOS E LEGISLAÇÃO) ==================== -->
-      <div class="card-dark p-6 rounded-xl space-y-6 border border-cyan-500/30">
-        <h3 class="font-bold text-cyan-400 text-lg border-b border-slate-800 pb-3 flex items-center">
-          <i class="fa-solid fa-scale-balanced text-cyan-400 mr-2"></i>3. Diretrizes Operacionais de Atendimento, Bloqueios e Legislação
-        </h3>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-          <!-- SUB-BLOCO A: PIXBET & MIGRAÇÃO / FIES -->
-          <div class="space-y-3 p-4 bg-slate-900/60 rounded-xl border border-slate-800">
-            <h4 class="text-xs font-bold text-purple-400 uppercase tracking-wider flex items-center">
-              <i class="fa-solid fa-building-columns mr-1.5"></i>Pixbet: Migração & FIES
-            </h4>
-            <div class="text-xs text-slate-300 space-y-2">
-              <p><strong>Migração de Plataforma:</strong> Ocorreu em <code>11/03/2024</code>. Relatórios cobrem apenas movimentações após essa data. Saldos anteriores foram transferidos automaticamente em 11/03/2024.</p>
-              <p class="p-2 bg-red-950/30 border border-red-500/30 rounded text-red-300">
-                <strong>Bloqueio FIES:</strong> Impedimento legal via consulta às bases oficiais de quota fixa. A restrição não afeta todo beneficiário, mas o cadastro apontado no FIES deve ser travado obrigatoriamente, sem discricionariedade.
-              </p>
+      <!-- CARD 2: DIRETRIZES SIGAP / STF -->
+      <div class="card-dark p-6 rounded-xl border border-amber-500/30">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+          <div class="flex items-center space-x-3">
+            <div class="p-3 bg-amber-500/20 text-amber-400 rounded-xl border border-amber-500/30">
+              <i class="fa-solid fa-scale-balanced text-2xl"></i>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-white">Regulamentação: Portaria SPA/MF nº 1.231/2024 & Diretrizes SIGAP</h2>
+              <p class="text-xs text-slate-400">Instruções operacionais para interpretação das restrições do SIGAP e legislação federal</p>
             </div>
           </div>
-
-          <!-- SUB-BLOCO B: BACEN CONTESTAÇÃO & TERCEIROS -->
-          <div class="space-y-3 p-4 bg-slate-900/60 rounded-xl border border-slate-800">
-            <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center">
-              <i class="fa-solid fa-money-bill-transfer mr-1.5"></i>Retenções: BACEN & Inventário
-            </h4>
-            <div class="text-xs text-slate-300 space-y-2">
-              <p><strong>Contestação BACEN:</strong> Se o saque estiver em análise/contestação no Banco Central, o valor permanece retido lá (sem devolução ao provedor). Orientar o cliente a solicitar o <code>Funds Recovery ID</code> junto ao seu banco.</p>
-              <p><strong>Titularidade / Terceiros:</strong> Liberação de valores pertencentes a falecidos/terceiros exige <strong>Inventário Judicial</strong> formal apresentado pelo inventariante legal.</p>
-            </div>
-          </div>
-
-          <!-- SUB-BLOCO C: FLUXO DE LUDOPATIA / EBAC -->
-          <div class="space-y-3 p-4 bg-slate-900/60 rounded-xl border border-slate-800">
-            <h4 class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center">
-              <i class="fa-solid fa-hand-holding-heart mr-1.5"></i>Protocolo EBAC & Jogo Responsável
-            </h4>
-            <div class="text-xs text-slate-300 space-y-2">
-              <p><strong>Primeiro Atendimento:</strong> Acolher o cliente, fornecer apoio emocional, enviar o link EBAC da marca e acionar os atalhos (ex: <code>pixbet-Ludopatia-encaminhado-EBAC</code>).</p>
-              <p><strong>Atuação do Backoffice / Financeiro:</strong> Registrar e realizar o bloqueio preventivo via canal <code>#ebac-bloqueio</code> de cada marca.</p>
-              <p><strong>Retorno de Cliente:</strong> Se o cliente retornar pedindo informações/reativação, a <strong>@Gerente</strong> deve ser marcada no atendimento imediatamente.</p>
-            </div>
-          </div>
-
+          <span class="text-xs bg-amber-950 text-amber-300 px-3 py-1 rounded-full border border-amber-500/30">Legislação Federal & STF</span>
         </div>
 
-        <!-- LINKS EBAC DA EMPRESA BRASILEIRA DE APOIO AO COMPULSIVO -->
-        <div class="p-4 bg-slate-950 rounded-lg border border-slate-800 flex flex-wrap justify-between items-center gap-2 text-xs">
-          <span class="font-bold text-slate-400 uppercase"><i class="fa-solid fa-link mr-1"></i>Links Oficiais EBAC por Marca:</span>
-          <div class="flex space-x-3 text-cyan-400 font-mono">
-            <a href="https://ebacbrasil.com.br/pixbet/" target="_blank" class="hover:underline">Pixbet</a>
-            <span>•</span>
-            <a href="https://ebacbrasil.com.br/ganheibet/" target="_blank" class="hover:underline">GanheiBet</a>
-            <span>•</span>
-            <a href="https://ebacbrasil.com.br/betdasorte/" target="_blank" class="hover:underline">Bet dá Sorte</a>
+        <div class="p-5 bg-slate-900/90 rounded-xl border-2 border-amber-500/40 space-y-4">
+          <h3 class="font-bold text-amber-300 text-sm flex items-center">
+            <i class="fa-solid fa-id-card text-amber-400 mr-2 text-base"></i>Instrução Prática: Card "Restrições SIGAP" (Notas → Operações Permitidas)
+          </h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            O status do jogador vem automaticamente sincronizado da Single/SIGAP. O analista deve apenas verificar o card antes de tomar qualquer ação operacional:
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div class="p-4 bg-emerald-950/20 border border-emerald-500/30 rounded-lg space-y-2">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-emerald-400 uppercase">Operações: DESBLOQUEADO</span>
+                <span class="text-[10px] bg-emerald-900/50 text-emerald-300 px-2 py-0.5 rounded">Decisão STF</span>
+              </div>
+              <p class="text-slate-300"><strong>Programa:</strong> Bolsa Família / BPC.</p>
+              <p class="text-slate-300"><strong>Significado:</strong> Por decisão do STF, esses programas não impedem o jogador de operar, apenas bloqueiam novos cadastros.</p>
+              <p class="font-semibold text-emerald-300">👉 Ação: Nenhuma ação necessária — o cliente pode continuar apostando normalmente.</p>
+            </div>
+
+            <div class="p-4 bg-red-950/20 border border-red-500/30 rounded-lg space-y-2">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-red-400 uppercase">Operações: BLOQUEADO</span>
+                <span class="text-[10px] bg-red-900/50 text-red-300 px-2 py-0.5 rounded">Impedimento Legal</span>
+              </div>
+              <p class="text-slate-300"><strong>Programa:</strong> FIES, Desenrola, Autoexclusão, etc.</p>
+              <p class="text-slate-300"><strong>Significado:</strong> O cliente se enquadra na regra geral de impedimento e está proibido de realizar operações na plataforma.</p>
+              <p class="font-semibold text-red-300">👉 Ação: Seguir fluxo imediato de bloqueio, encerramento de conta e devolução de saldo.</p>
+            </div>
           </div>
         </div>
-
       </div>
 
     </section>
 
-    <!-- ==================== TAB 2: QUIZ & RANKING PÚBLICO ==================== -->
+    <!-- ==================== TAB 4: QUIZ & RANKING PÚBLICO ==================== -->
     <section id="tab-quiz" class="hidden space-y-8">
-      
-      <!-- FORM DE IDENTIFICAÇÃO (INÍCIO) -->
       <div id="quiz-start-box" class="card-dark p-8 rounded-2xl max-w-xl mx-auto space-y-6 gold-glow border border-purple-500/30">
         <div class="text-center space-y-2">
           <div class="inline-block p-4 bg-purple-600/20 rounded-full text-purple-400 mb-2">
@@ -267,7 +314,6 @@
         </div>
       </div>
 
-      <!-- BOX DAS QUESTÕES DO QUIZ -->
       <div id="quiz-question-box" class="hidden card-dark p-8 rounded-2xl max-w-2xl mx-auto space-y-6">
         <div class="flex justify-between items-center text-xs font-semibold text-slate-400 border-b border-slate-800 pb-3">
           <span id="question-progress">Questão 1 de 3</span>
@@ -287,13 +333,12 @@
         </div>
       </div>
 
-      <!-- TELA DE RESULTADO / FINAL -->
       <div id="quiz-result-box" class="hidden card-dark p-8 rounded-2xl max-w-md mx-auto text-center space-y-6">
         <div class="inline-block p-4 bg-emerald-500/20 text-emerald-400 rounded-full">
           <i class="fa-solid fa-trophy text-4xl"></i>
         </div>
         <h2 class="text-2xl font-bold text-white">Quiz Finalizado!</h2>
-        <p class="text-xs text-slate-400">Sua pontuação foi registrada no Ranking Geral abaixo. Volte amanhã para responder novamente!</p>
+        <p class="text-xs text-slate-400">Sua pontuação foi registrada no Ranking Geral abaixo.</p>
 
         <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
           <p class="text-xs text-slate-400">Sua Pontuação Final</p>
@@ -301,7 +346,6 @@
         </div>
       </div>
 
-      <!-- RANKING PÚBLICO DE PONTUAÇÃO -->
       <div class="card-dark rounded-xl overflow-hidden border border-slate-800 max-w-4xl mx-auto">
         <div class="p-4 bg-slate-900 border-b border-slate-800 flex justify-between items-center">
           <div>
@@ -332,10 +376,9 @@
           </table>
         </div>
       </div>
-
     </section>
 
-    <!-- ==================== TAB 3: MURAL DE AVISOS (COM MODO QUADRO / MONITOR) ==================== -->
+    <!-- ==================== TAB 5: MURAL DE AVISOS ==================== -->
     <section id="tab-avisos" class="space-y-6 hidden">
       <div id="notice-board-container" class="card-dark p-6 rounded-xl border border-cyan-500/30 purple-glow transition-all duration-300">
         <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
@@ -362,10 +405,8 @@
       </div>
     </section>
 
-    <!-- ==================== TAB 4: ÁREA DO ADMIN ==================== -->
+    <!-- ==================== TAB 6: ÁREA DO ADMIN ==================== -->
     <section id="tab-admin" class="hidden space-y-6">
-      
-      <!-- LOGIN ADMIN -->
       <div id="admin-login-box" class="card-dark p-8 rounded-2xl max-w-sm mx-auto space-y-4 text-center border border-amber-500/20">
         <div class="p-3 bg-amber-500/20 text-amber-400 inline-block rounded-full mb-1">
           <i class="fa-solid fa-lock text-2xl"></i>
@@ -378,7 +419,6 @@
         </button>
       </div>
 
-      <!-- PAINEL REALTIME ADMIN -->
       <div id="admin-panel" class="hidden space-y-6">
         <div class="flex justify-between items-center bg-slate-900 p-4 rounded-xl border border-slate-800">
           <div>
@@ -390,7 +430,6 @@
           </button>
         </div>
 
-        <!-- FORMULÁRIO DE PUBLICAÇÃO DE AVISO (PROTEGIDO) -->
         <div class="card-dark p-6 rounded-xl border border-amber-500/30 space-y-4">
           <h4 class="font-bold text-amber-400 text-sm flex items-center">
             <i class="fa-solid fa-paper-plane mr-2"></i>Publicar Novo Aviso no Quadro do Monitor
@@ -410,7 +449,6 @@
           </div>
         </div>
 
-        <!-- LISTA DE AVISOS PUBLICADOS COM OPÇÃO DE DELETAR -->
         <div class="card-dark p-6 rounded-xl border border-slate-800 space-y-4">
           <h4 class="font-bold text-white text-sm flex items-center">
             <i class="fa-solid fa-list-check mr-2 text-cyan-400"></i>Gerenciar / Limpar Avisos Publicados
@@ -420,7 +458,6 @@
           </div>
         </div>
 
-        <!-- TABELA DETALHADA DO ADMIN -->
         <div class="card-dark rounded-xl overflow-hidden border border-slate-800">
           <div class="p-4 bg-slate-900 font-bold text-xs text-slate-300 uppercase border-b border-slate-800">
             Histórico Completo de Respostas do Quiz
@@ -444,14 +481,12 @@
           </div>
         </div>
       </div>
-
     </section>
 
   </main>
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    // 1. FIREBASE CONFIGURATION
     const firebaseConfig = {
       apiKey: "AIzaSyBtxvlcx4BPrTO-jBgxJFC6qsRq07zhKXg",
       authDomain: "escala-nova-d596e.firebaseapp.com",
@@ -465,61 +500,39 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 2. BANCO DE QUESTÕES (INCLUINDO AS NOVAS DIRETRIZES)
     const masterQuestionBank = [
       {
-        question: "[Flabet / Transações] Qual é a regra sobre relatórios de transações na Flabet e qual a orientação em relação ao cliente?",
+        question: "[BCB nº 766/2026] Qual foi o novo prazo estabelecido pela Instrução Normativa BCB nº 766/2026 para contestação de devoluções por fraude no Pix?",
         options: [
-          "Só é possível emitir relatórios após 07/04/2024, e essa data limite NÃO deve ser repassada diretamente ao cliente.",
-          "Qualquer relatório pode ser baixado normalmente e o limite de data deve ser avisado no chat.",
-          "Relatórios só cobrem o mês atual e o cliente deve criar outra conta.",
-          "Todas as transações do ano passado estão disponíveis via e-mail."
+          "Ampliação para 80 dias do prazo de contestação.",
+          "Redução para 30 dias corridos.",
+          "Prazo fixo de 15 dias úteis.",
+          "O prazo não sofreu alterações."
         ],
-        correctAnswerText: "Só é me emitir relatórios após 07/04/2024, e essa data limite NÃO deve ser repassada diretamente ao cliente."
+        correctAnswerText: "Ampliação para 80 dias do prazo de contestação."
       },
       {
-        question: "[Pixbet / FIES] Qual é o motivo do bloqueio de contas associadas ao FIES na Pixbet?",
+        question: "[Restrições SIGAP] No card Restrições SIGAP do jogador, o que significa quando o campo Operações aparece 'Desbloqueado'?",
         options: [
-          "Impedimento legal em cumprimento à regulamentação vigente após checagem nas bases oficiais.",
-          "Decisão discricionária e interna da Pixbet.",
-          "Falha temporária de comunicação no PIX.",
-          "Cancelamento automático por falta de apostas."
+          "Trata-se de restrição de Bolsa Família/BPC, que por decisão do STF não impede o cliente de operar normalmente.",
+          "O cliente está liberado por decisão da supervisão interna.",
+          "Indica que a conta não possui nenhum vínculo com o SIGAP.",
+          "O cliente precisa alterar a senha antes de poder apostar."
         ],
-        correctAnswerText: "Impedimento legal em cumprimento à regulamentação vigente após checagem nas bases oficiais."
+        correctAnswerText: "Trata-se de restrição de Bolsa Família/BPC, que por decisão do STF não impede o cliente de operar normalmente."
       },
       {
-        question: "[Contestação BACEN] O que deve ser orientado ao cliente quando seu saque estiver retido em análise pelo Banco Central?",
+        question: "[BCB nº 766/2026] A partir de 26/10/2026, qual novo atributo técnico passa a ser incluído no rastreamento de transações?",
         options: [
-          "Solicitar junto ao seu banco o Funds Recovery ID para acompanhar o trâmite.",
-          "Pedir reembolso no chat ao vivo imediatamente.",
-          "Refazer o cadastro do PIX no painel.",
-          "Aguardar 24 horas que o valor retorna sozinho ao gateway."
+          "Atributo TransactionDepth.",
+          "Atributo UserAuthCode.",
+          "Atributo PixRecoveryToken.",
+          "Atributo AccountSecurityId."
         ],
-        correctAnswerText: "Solicitar junto ao seu banco o Funds Recovery ID para acompanhar o trâmite."
-      },
-      {
-        question: "[Jogo Responsável / EBAC] Como o atendimento e o BKO devem proceder ao identificar relatos de jogo compulsivo?",
-        options: [
-          "Realizar acolhimento, enviar link EBAC, registrar bloqueio preventivo e marcar a @Gerente se o cliente retornar.",
-          "Apagar o histórico da conta e liberar saldo promocional.",
-          "Apenas orientar o cliente a apostar valores menores.",
-          "Transferir o chamado para o provedor de pagamento."
-        ],
-        correctAnswerText: "Realizar acolhimento, enviar link EBAC, registrar bloqueio preventivo e marcar a @Gerente se o cliente retornar."
-      },
-      {
-        question: "[Apostas & Categorias] No painel de BKO, como os jogos GOAL e MINES devem ser interpretados em relação à sua categoria?",
-        options: [
-          "São jogos do tipo Crash, mesmo que apareçam incorretamente categorizados como Slots no painel.",
-          "São Slots normais e devem seguir regra de rollover de cassino.",
-          "São jogos esportivos e entram na aba de palpites.",
-          "São jogos proibidos e geram bloqueio imediato."
-        ],
-        correctAnswerText: "São jogos do tipo Crash, mesmo que apareçam incorretamente categorizados como Slots no painel."
+        correctAnswerText: "Atributo TransactionDepth."
       }
     ];
 
-    // STATE VARIABLES
     let activeQuizQuestions = [];
     let currentQuestionIndex = 0;
     let selectedOptionIndex = null;
@@ -529,36 +542,44 @@
     let timerInterval = null;
     let isMonitorBoardMode = false;
 
-    // INICIALIZAÇÃO
     document.addEventListener('DOMContentLoaded', () => {
       listenPublicRankingData();
       listenPublicNoticesData();
     });
 
-    // NAVIGATION
     function switchTab(tab) {
       document.getElementById('tab-dashboard').classList.add('hidden');
+      document.getElementById('tab-jogo-responsavel').classList.add('hidden');
+      document.getElementById('tab-portaria').classList.add('hidden');
       document.getElementById('tab-quiz').classList.add('hidden');
       document.getElementById('tab-avisos').classList.add('hidden');
       document.getElementById('tab-admin').classList.add('hidden');
 
-      document.getElementById('btn-tab-dashboard').className = "px-4 py-2 text-sm font-medium rounded-lg text-slate-300 hover:bg-slate-800 transition";
-      document.getElementById('btn-tab-quiz').className = "px-4 py-2 text-sm font-medium rounded-lg text-slate-300 hover:bg-slate-800 transition";
-      document.getElementById('btn-tab-avisos').className = "px-4 py-2 text-sm font-medium rounded-lg text-slate-300 hover:bg-slate-800 transition border border-cyan-500/30 text-cyan-400";
-      document.getElementById('btn-tab-admin').className = "px-4 py-2 text-sm font-medium rounded-lg text-amber-400 hover:bg-amber-400/10 transition border border-amber-500/30";
+      document.getElementById('btn-tab-dashboard').className = "px-3 py-2 text-xs font-medium rounded-lg text-slate-300 hover:bg-slate-800 transition";
+      document.getElementById('btn-tab-jogo-responsavel').className = "px-3 py-2 text-xs font-medium rounded-lg text-red-400 hover:bg-red-950/40 transition border border-red-500/30";
+      document.getElementById('btn-tab-portaria').className = "px-3 py-2 text-xs font-medium rounded-lg text-amber-400 hover:bg-amber-950/40 transition border border-amber-500/30";
+      document.getElementById('btn-tab-quiz').className = "px-3 py-2 text-xs font-medium rounded-lg text-slate-300 hover:bg-slate-800 transition";
+      document.getElementById('btn-tab-avisos').className = "px-3 py-2 text-xs font-medium rounded-lg text-cyan-400 hover:bg-slate-800 transition border border-cyan-500/30";
+      document.getElementById('btn-tab-admin').className = "px-3 py-2 text-xs font-medium rounded-lg text-amber-400 hover:bg-amber-400/10 transition border border-amber-500/30";
 
       if (tab === 'dashboard') {
         document.getElementById('tab-dashboard').classList.remove('hidden');
-        document.getElementById('btn-tab-dashboard').className = "px-4 py-2 text-sm font-medium rounded-lg transition bg-purple-600 text-white shadow-md";
+        document.getElementById('btn-tab-dashboard').className = "px-3 py-2 text-xs font-medium rounded-lg transition bg-purple-600 text-white shadow-md";
+      } else if (tab === 'jogo-responsavel') {
+        document.getElementById('tab-jogo-responsavel').classList.remove('hidden');
+        document.getElementById('btn-tab-jogo-responsavel').className = "px-3 py-2 text-xs font-medium rounded-lg transition bg-red-600 text-white shadow-md";
+      } else if (tab === 'portaria') {
+        document.getElementById('tab-portaria').classList.remove('hidden');
+        document.getElementById('btn-tab-portaria').className = "px-3 py-2 text-xs font-medium rounded-lg transition bg-amber-600 text-white shadow-md";
       } else if (tab === 'quiz') {
         document.getElementById('tab-quiz').classList.remove('hidden');
-        document.getElementById('btn-tab-quiz').className = "px-4 py-2 text-sm font-medium rounded-lg transition bg-purple-600 text-white shadow-md";
+        document.getElementById('btn-tab-quiz').className = "px-3 py-2 text-xs font-medium rounded-lg transition bg-purple-600 text-white shadow-md";
       } else if (tab === 'avisos') {
         document.getElementById('tab-avisos').classList.remove('hidden');
-        document.getElementById('btn-tab-avisos').className = "px-4 py-2 text-sm font-medium rounded-lg transition bg-cyan-600 text-white shadow-md";
+        document.getElementById('btn-tab-avisos').className = "px-3 py-2 text-xs font-medium rounded-lg transition bg-cyan-600 text-white shadow-md";
       } else if (tab === 'admin') {
         document.getElementById('tab-admin').classList.remove('hidden');
-        document.getElementById('btn-tab-admin').className = "px-4 py-2 text-sm font-medium rounded-lg bg-amber-500 text-slate-950 font-bold shadow-md";
+        document.getElementById('btn-tab-admin').className = "px-3 py-2 text-xs font-medium rounded-lg bg-amber-500 text-slate-950 font-bold shadow-md";
       }
     }
 
@@ -571,7 +592,6 @@
       return arr;
     }
 
-    // TENTATIVA ÚNICA
     function hasTakenQuizToday(name) {
       const today = new Date().toISOString().split('T')[0];
       const key = `quiz_done_${name.toLowerCase().trim()}_${today}`;
@@ -584,59 +604,33 @@
       localStorage.setItem(key, 'true');
     }
 
-    // QUIZ LOGIC
     function startQuiz() {
       const name = document.getElementById('user-name').value.trim();
-
-      if (!name) {
-        alert("Por favor, preencha o seu nome completo antes de começar.");
-        return;
-      }
-
-      if (hasTakenQuizToday(name)) {
-        alert(`Atenção, ${name}! Você já realizou o quiz de hoje. Cada analista só pode responder uma vez por dia.`);
-        return;
-      }
+      if (!name) { alert("Por favor, preencha o seu nome completo antes de começar."); return; }
+      if (hasTakenQuizToday(name)) { alert(`Atenção, ${name}! Você já realizou o quiz de hoje.`); return; }
 
       userName = name;
-      
       const shuffledBank = shuffleArray(masterQuestionBank);
       const selectedQuestions = shuffledBank.slice(0, 3);
 
       activeQuizQuestions = selectedQuestions.map(q => {
         const shuffledOptions = shuffleArray(q.options);
-        const correctIndex = shuffledOptions.indexOf(q.correctAnswerText);
-        return {
-          question: q.question,
-          options: shuffledOptions,
-          correct: correctIndex
-        };
+        return { question: q.question, options: shuffledOptions, correct: shuffledOptions.indexOf(q.correctAnswerText) };
       });
 
-      currentQuestionIndex = 0;
-      correctAnswersCount = 0;
-      timeRemaining = 40;
-
+      currentQuestionIndex = 0; correctAnswersCount = 0; timeRemaining = 40;
       document.getElementById('quiz-start-box').classList.add('hidden');
       document.getElementById('quiz-question-box').classList.remove('hidden');
       document.getElementById('quiz-result-box').classList.add('hidden');
 
-      startTimer();
-      loadQuestion();
+      startTimer(); loadQuestion();
     }
 
     function startTimer() {
-      clearInterval(timerInterval);
-      updateTimerDisplay();
-
+      clearInterval(timerInterval); updateTimerDisplay();
       timerInterval = setInterval(() => {
-        timeRemaining--;
-        updateTimerDisplay();
-
-        if (timeRemaining <= 0) {
-          clearInterval(timerInterval);
-          finishQuiz(true);
-        }
+        timeRemaining--; updateTimerDisplay();
+        if (timeRemaining <= 0) { clearInterval(timerInterval); finishQuiz(true); }
       }, 1000);
     }
 
@@ -644,82 +638,49 @@
       const secs = String(timeRemaining).padStart(2, '0');
       const timerElement = document.getElementById('quiz-timer');
       timerElement.innerHTML = `<i class="fa-solid fa-stopwatch mr-1"></i>00:${secs}`;
-      
-      if (timeRemaining <= 10) {
-        timerElement.className = "text-red-500 font-bold text-sm animate-pulse";
-      } else {
-        timerElement.className = "text-amber-400 font-bold text-sm";
-      }
+      timerElement.className = timeRemaining <= 10 ? "text-red-500 font-bold text-sm animate-pulse" : "text-amber-400 font-bold text-sm";
     }
 
     function loadQuestion() {
       selectedOptionIndex = null;
       const q = activeQuizQuestions[currentQuestionIndex];
-
       document.getElementById('question-progress').innerText = `Questão ${currentQuestionIndex + 1} de 3`;
       document.getElementById('question-title').innerText = q.question;
 
-      const container = document.getElementById('options-container');
-      container.innerHTML = '';
-
+      const container = document.getElementById('options-container'); container.innerHTML = '';
       q.options.forEach((opt, idx) => {
         const btn = document.createElement('button');
         btn.className = "w-full text-left p-3.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-xl text-xs text-slate-200 transition flex items-center space-x-3";
         btn.onclick = () => selectOption(idx, btn);
-        btn.innerHTML = `
-          <span class="w-6 h-6 rounded-full border border-slate-600 flex items-center justify-center font-bold text-slate-400 text-xs shrink-0">${String.fromCharCode(65 + idx)}</span>
-          <span class="leading-relaxed">${opt}</span>
-        `;
+        btn.innerHTML = `<span class="w-6 h-6 rounded-full border border-slate-600 flex items-center justify-center font-bold text-slate-400 text-xs shrink-0">${String.fromCharCode(65 + idx)}</span><span class="leading-relaxed">${opt}</span>`;
         container.appendChild(btn);
       });
 
-      const nextBtn = document.getElementById('btn-next');
-      nextBtn.disabled = true;
-      nextBtn.className = "bg-purple-600 opacity-50 cursor-not-allowed hover:bg-purple-500 text-white font-bold px-6 py-2.5 rounded-lg transition";
+      const nextBtn = document.getElementById('btn-next'); nextBtn.disabled = true;
+      nextBtn.className = "bg-purple-600 opacity-50 cursor-not-allowed text-white font-bold px-6 py-2.5 rounded-lg transition";
     }
 
     function selectOption(idx, element) {
       selectedOptionIndex = idx;
       const buttons = document.getElementById('options-container').querySelectorAll('button');
-      
-      buttons.forEach(b => {
-        b.className = "w-full text-left p-3.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-200 transition flex items-center space-x-3";
-      });
-
+      buttons.forEach(b => b.className = "w-full text-left p-3.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-200 transition flex items-center space-x-3");
       element.className = "w-full text-left p-3.5 bg-purple-950/40 border-2 border-purple-500 rounded-xl text-xs text-white transition flex items-center space-x-3";
-
-      const nextBtn = document.getElementById('btn-next');
-      nextBtn.disabled = false;
+      const nextBtn = document.getElementById('btn-next'); nextBtn.disabled = false;
       nextBtn.className = "bg-purple-600 hover:bg-purple-500 text-white font-bold px-6 py-2.5 rounded-lg transition shadow-md";
     }
 
     function nextQuestion() {
       if (selectedOptionIndex === null) return;
-
-      if (selectedOptionIndex === activeQuizQuestions[currentQuestionIndex].correct) {
-        correctAnswersCount++;
-      }
-
+      if (selectedOptionIndex === activeQuizQuestions[currentQuestionIndex].correct) correctAnswersCount++;
       currentQuestionIndex++;
-
-      if (currentQuestionIndex < activeQuizQuestions.length) {
-        loadQuestion();
-      } else {
-        finishQuiz(false);
-      }
+      if (currentQuestionIndex < activeQuizQuestions.length) loadQuestion(); else finishQuiz(false);
     }
 
     function finishQuiz(timedOut = false) {
       clearInterval(timerInterval);
-
-      if (timedOut && selectedOptionIndex !== null) {
-        if (selectedOptionIndex === activeQuizQuestions[currentQuestionIndex].correct) {
-          correctAnswersCount++;
-        }
-      }
+      if (timedOut && selectedOptionIndex !== null && selectedOptionIndex === activeQuizQuestions[currentQuestionIndex].correct) correctAnswersCount++;
 
       const totalScorePoints = correctAnswersCount * 10;
-
       markQuizTakenToday(userName);
 
       document.getElementById('quiz-question-box').classList.add('hidden');
@@ -727,71 +688,34 @@
       document.getElementById('final-score').innerText = `${totalScorePoints} / 30 pts`;
 
       const payload = {
-        nome: userName,
-        cargo: "Analista",
-        scorePoints: totalScorePoints,
-        acertos: correctAnswersCount,
-        totalQuestions: 3,
-        tempoRestanteSegundos: Math.max(0, timeRemaining),
-        tempoRestante: `${Math.max(0, timeRemaining)}s`,
-        timestamp: firebase.database.ServerValue.TIMESTAMP,
-        dataHora: new Date().toLocaleString('pt-BR')
+        nome: userName, cargo: "Analista", scorePoints: totalScorePoints, acertos: correctAnswersCount,
+        totalQuestions: 3, tempoRestanteSegundos: Math.max(0, timeRemaining), tempoRestante: `${Math.max(0, timeRemaining)}s`,
+        timestamp: firebase.database.ServerValue.TIMESTAMP, dataHora: new Date().toLocaleString('pt-BR')
       };
-
       db.ref('resultados_quiz_financeiro').push(payload);
     }
 
-    // RANKING PÚBLICO
     function listenPublicRankingData() {
       db.ref('resultados_quiz_financeiro').on('value', (snapshot) => {
-        const tableBody = document.getElementById('public-ranking-table');
-        tableBody.innerHTML = '';
+        const tableBody = document.getElementById('public-ranking-table'); tableBody.innerHTML = '';
+        if (!snapshot.exists()) { tableBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">Nenhum resultado registrado ainda.</td></tr>`; return; }
 
-        if (!snapshot.exists()) {
-          tableBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">Nenhum resultado registrado ainda. Seja o primeiro a responder!</td></tr>`;
-          return;
-        }
-
-        const data = snapshot.val();
-        const entries = Object.values(data).sort((a, b) => {
-          if (b.scorePoints !== a.scorePoints) {
-            return b.scorePoints - a.scorePoints;
-          }
-          return (b.tempoRestanteSegundos || 0) - (a.tempoRestanteSegundos || 0);
-        });
-
+        const entries = Object.values(snapshot.val()).sort((a, b) => b.scorePoints !== a.scorePoints ? b.scorePoints - a.scorePoints : (b.tempoRestanteSegundos || 0) - (a.tempoRestanteSegundos || 0));
         entries.forEach((entry, idx) => {
-          const tr = document.createElement('tr');
-          tr.className = "hover:bg-slate-900/50 transition border-b border-slate-800";
-
-          const pts = entry.scorePoints !== undefined ? entry.scorePoints : 0;
-          const notaColor = pts >= 20 ? 'text-emerald-400' : (pts >= 10 ? 'text-amber-400' : 'text-red-400');
-          
-          let medal = `#${idx + 1}`;
-          if (idx === 0) medal = '🥇 1º';
-          if (idx === 1) medal = '🥈 2º';
-          if (idx === 2) medal = '🥉 3º';
-
-          tr.innerHTML = `
-            <td class="p-4 text-center font-bold text-amber-400">${medal}</td>
-            <td class="p-4 font-semibold text-white">${entry.nome}</td>
-            <td class="p-4 font-bold ${notaColor}">${pts} pts</td>
-            <td class="p-4 text-slate-400">${entry.tempoRestante || '--'}</td>
-            <td class="p-4 text-slate-500">${entry.dataHora}</td>
-          `;
+          const tr = document.createElement('tr'); tr.className = "hover:bg-slate-900/50 transition border-b border-slate-800";
+          const pts = entry.scorePoints || 0; const notaColor = pts >= 20 ? 'text-emerald-400' : (pts >= 10 ? 'text-amber-400' : 'text-red-400');
+          let medal = `#${idx + 1}`; if (idx === 0) medal = '🥇 1º'; if (idx === 1) medal = '🥈 2º'; if (idx === 2) medal = '🥉 3º';
+          tr.innerHTML = `<td class="p-4 text-center font-bold text-amber-400">${medal}</td><td class="p-4 font-semibold text-white">${entry.nome}</td><td class="p-4 font-bold ${notaColor}">${pts} pts</td><td class="p-4 text-slate-400">${entry.tempoRestante || '--'}</td><td class="p-4 text-slate-500">${entry.dataHora}</td>`;
           tableBody.appendChild(tr);
         });
       });
     }
 
-    // AVISOS PÚBLICOS
     function listenPublicNoticesData() {
       db.ref('avisos_painel').on('value', (snapshot) => {
         const container = document.getElementById('public-announcements-list');
         const adminManagementContainer = document.getElementById('admin-notices-management-list');
-        
-        container.innerHTML = '';
-        if (adminManagementContainer) adminManagementContainer.innerHTML = '';
+        container.innerHTML = ''; if (adminManagementContainer) adminManagementContainer.innerHTML = '';
 
         if (!snapshot.exists()) {
           container.innerHTML = `<div class="p-4 bg-slate-900 rounded-lg text-center text-slate-500 text-xs">Nenhum aviso publicado no momento.</div>`;
@@ -799,83 +723,47 @@
           return;
         }
 
-        const data = snapshot.val();
-        const entries = Object.entries(data).sort((a, b) => (b[1].timestamp || 0) - (a[1].timestamp || 0));
-
+        const entries = Object.entries(snapshot.val()).sort((a, b) => (b[1].timestamp || 0) - (a[1].timestamp || 0));
         entries.forEach(([id, notice]) => {
-          const card = document.createElement('div');
-          const isBig = isMonitorBoardMode;
-          
-          card.className = isBig 
-            ? "p-8 bg-slate-900/90 rounded-2xl border-2 border-cyan-400 space-y-4 shadow-2xl" 
-            : "p-5 bg-slate-900/80 rounded-xl border border-cyan-500/20 space-y-2 shadow-md";
-
-          card.innerHTML = `
-            <div class="flex justify-between items-start border-b border-slate-800 pb-2">
-              <h3 class="${isBig ? 'text-2xl font-extrabold' : 'text-sm font-bold'} text-cyan-300 flex items-center">
-                <i class="fa-solid fa-bell text-cyan-400 mr-3"></i>${notice.titulo}
-              </h3>
-              <span class="${isBig ? 'text-xs px-3 py-1' : 'text-[10px] px-2 py-0.5'} text-slate-400 bg-slate-950 rounded border border-slate-800">${notice.dataHora}</span>
-            </div>
-            <p class="${isBig ? 'text-lg font-medium leading-relaxed' : 'text-xs'} text-slate-200 whitespace-pre-line">${notice.conteudo}</p>
-          `;
+          const card = document.createElement('div'); const isBig = isMonitorBoardMode;
+          card.className = isBig ? "p-8 bg-slate-900/90 rounded-2xl border-2 border-cyan-400 space-y-4 shadow-2xl" : "p-5 bg-slate-900/80 rounded-xl border border-cyan-500/20 space-y-2 shadow-md";
+          card.innerHTML = `<div class="flex justify-between items-start border-b border-slate-800 pb-2"><h3 class="${isBig ? 'text-2xl font-extrabold' : 'text-sm font-bold'} text-cyan-300 flex items-center"><i class="fa-solid fa-bell text-cyan-400 mr-3"></i>${notice.titulo}</h3><span class="${isBig ? 'text-xs px-3 py-1' : 'text-[10px] px-2 py-0.5'} text-slate-400 bg-slate-950 rounded border border-slate-800">${notice.dataHora}</span></div><p class="${isBig ? 'text-lg font-medium leading-relaxed' : 'text-xs'} text-slate-200 whitespace-pre-line">${notice.conteudo}</p>`;
           container.appendChild(card);
 
           if (adminManagementContainer) {
-            const adminCard = document.createElement('div');
-            adminCard.className = "p-3 bg-slate-900 rounded-lg border border-slate-800 flex justify-between items-center";
-            adminCard.innerHTML = `
-              <div>
-                <p class="font-bold text-white text-xs">${notice.titulo}</p>
-                <p class="text-[10px] text-slate-500">${notice.dataHora}</p>
-              </div>
-              <button onclick="deleteNotice('${id}')" class="px-3 py-1 bg-red-500/20 text-red-400 hover:bg-red-500/40 rounded text-xs font-semibold flex items-center transition">
-                <i class="fa-solid fa-trash mr-1.5"></i>Excluir Aviso
-              </button>
-            `;
+            const adminCard = document.createElement('div'); adminCard.className = "p-3 bg-slate-900 rounded-lg border border-slate-800 flex justify-between items-center";
+            adminCard.innerHTML = `<div><p class="font-bold text-white text-xs">${notice.titulo}</p><p class="text-[10px] text-slate-500">${notice.dataHora}</p></div><button onclick="deleteNotice('${id}')" class="px-3 py-1 bg-red-500/20 text-red-400 hover:bg-red-500/40 rounded text-xs font-semibold flex items-center transition"><i class="fa-solid fa-trash mr-1.5"></i>Excluir Aviso</button>`;
             adminManagementContainer.appendChild(adminCard);
           }
         });
       });
     }
 
-    // MODO QUADRO DE MONITOR
     function toggleMonitorBoard() {
       const container = document.getElementById('notice-board-container');
-      const title = document.getElementById('board-title');
-      const subtitle = document.getElementById('board-subtitle');
-      const btn = document.getElementById('btn-toggle-board');
-
+      const title = document.getElementById('board-title'); const subtitle = document.getElementById('board-subtitle'); const btn = document.getElementById('btn-toggle-board');
       isMonitorBoardMode = !isMonitorBoardMode;
 
       if (isMonitorBoardMode) {
         container.className = "fixed inset-0 z-50 bg-slate-950 p-10 overflow-y-auto space-y-6";
-        title.className = "text-3xl font-extrabold text-white";
-        subtitle.className = "text-sm text-cyan-400 font-semibold";
+        title.className = "text-3xl font-extrabold text-white"; subtitle.className = "text-sm text-cyan-400 font-semibold";
         btn.innerHTML = `<i class="fa-solid fa-compress mr-2"></i>Sair do Modo Quadro`;
         btn.className = "bg-red-600 hover:bg-red-500 text-white font-bold px-4 py-2 rounded-lg text-sm flex items-center shadow-lg transition";
       } else {
         container.className = "card-dark p-6 rounded-xl border border-cyan-500/30 purple-glow transition-all duration-300";
-        title.className = "text-xl font-bold text-white";
-        subtitle.className = "text-xs text-slate-400";
+        title.className = "text-xl font-bold text-white"; subtitle.className = "text-xs text-slate-400";
         btn.innerHTML = `<i class="fa-solid fa-expand mr-2"></i>Modo Quadro (Exibir no Monitor)`;
         btn.className = "bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-4 py-2 rounded-lg text-xs flex items-center shadow-lg transition";
       }
-
       listenPublicNoticesData();
     }
 
-    // ADMIN AUTENTICAÇÃO E TRANSMISSÃO
     function loginAdmin() {
-      const pass = document.getElementById('admin-password').value;
-      if (pass === "admin123") {
+      if (document.getElementById('admin-password').value === "admin123") {
         document.getElementById('admin-login-box').classList.add('hidden');
         document.getElementById('admin-panel').classList.remove('hidden');
-        listenAdminRealtimeData();
-        listenPublicNoticesData();
-      } else {
-        alert("Senha de administrador incorreta.");
-      }
+        listenAdminRealtimeData(); listenPublicNoticesData();
+      } else { alert("Senha de administrador incorreta."); }
     }
 
     function logoutAdmin() {
@@ -887,64 +775,28 @@
     function publishNotice() {
       const title = document.getElementById('notice-title').value.trim();
       const content = document.getElementById('notice-content').value.trim();
+      if (!title || !content) { alert("Preencha todos os campos."); return; }
 
-      if (!title || !content) {
-        alert("Preencha o título e o conteúdo do aviso antes de transmitir.");
-        return;
-      }
-
-      const payload = {
-        titulo: title,
-        conteudo: content,
-        timestamp: firebase.database.ServerValue.TIMESTAMP,
-        dataHora: new Date().toLocaleString('pt-BR')
-      };
-
-      db.ref('avisos_painel').push(payload, (error) => {
-        if (!error) {
-          alert("Aviso transmitido com sucesso no Quadro de Avisos!");
-          document.getElementById('notice-title').value = '';
-          document.getElementById('notice-content').value = '';
-        } else {
-          alert("Erro ao publicar aviso.");
-        }
+      const payload = { titulo: title, conteudo: content, timestamp: firebase.database.ServerValue.TIMESTAMP, dataHora: new Date().toLocaleString('pt-BR') };
+      db.ref('avisos_painel').push(payload, (err) => {
+        if (!err) { alert("Aviso transmitido!"); document.getElementById('notice-title').value = ''; document.getElementById('notice-content').value = ''; }
       });
     }
 
     function deleteNotice(noticeId) {
-      if (confirm("Tem certeza que deseja apagar este aviso do quadro?")) {
-        db.ref(`avisos_painel/${noticeId}`).remove()
-          .then(() => alert("Aviso removido com sucesso!"))
-          .catch(() => alert("Erro ao remover aviso."));
-      }
+      if (confirm("Apagar aviso do quadro?")) { db.ref(`avisos_painel/${noticeId}`).remove(); }
     }
 
     function listenAdminRealtimeData() {
       db.ref('resultados_quiz_financeiro').on('value', (snapshot) => {
-        const tableBody = document.getElementById('admin-results-table');
-        tableBody.innerHTML = '';
+        const tableBody = document.getElementById('admin-results-table'); tableBody.innerHTML = '';
+        if (!snapshot.exists()) { tableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">Nenhum resultado registrado.</td></tr>`; return; }
 
-        if (!snapshot.exists()) {
-          tableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">Nenhum resultado registrado.</td></tr>`;
-          return;
-        }
-
-        const data = snapshot.val();
-        const entries = Object.values(data).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-
+        const entries = Object.values(snapshot.val()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
         entries.forEach(entry => {
-          const tr = document.createElement('tr');
-          tr.className = "hover:bg-slate-900/50 transition border-b border-slate-800";
-
-          const pts = entry.scorePoints !== undefined ? entry.scorePoints : 0;
-          const notaColor = pts >= 20 ? 'text-emerald-400' : (pts >= 10 ? 'text-amber-400' : 'text-red-400');
-
-          tr.innerHTML = `
-            <td class="p-4 font-semibold text-white">${entry.nome}</td>
-            <td class="p-4 font-bold ${notaColor}">${pts} / 30 pts</td>
-            <td class="p-4 text-slate-400">${entry.tempoRestante || '--'} restante</td>
-            <td class="p-4 text-slate-500">${entry.dataHora}</td>
-          `;
+          const tr = document.createElement('tr'); tr.className = "hover:bg-slate-900/50 transition border-b border-slate-800";
+          const pts = entry.scorePoints || 0; const notaColor = pts >= 20 ? 'text-emerald-400' : (pts >= 10 ? 'text-amber-400' : 'text-red-400');
+          tr.innerHTML = `<td class="p-4 font-semibold text-white">${entry.nome}</td><td class="p-4 font-bold ${notaColor}">${pts} / 30 pts</td><td class="p-4 text-slate-400">${entry.tempoRestante || '--'} restante</td><td class="p-4 text-slate-500">${entry.dataHora}</td>`;
           tableBody.appendChild(tr);
         });
       });
