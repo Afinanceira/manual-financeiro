@@ -19,6 +19,7 @@
     .card-dark { background-color: #131b2e; border: 1px solid #1e293b; }
     .gold-glow { box-shadow: 0 0 15px rgba(234, 179, 8, 0.15); }
     .purple-glow { box-shadow: 0 0 20px rgba(168, 85, 247, 0.15); }
+    .amber-glow { box-shadow: 0 0 20px rgba(245, 158, 11, 0.15); }
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -63,6 +64,8 @@
 
     <!-- ==================== TAB 1: DASHBOARD DE PROCEDIMENTOS ==================== -->
     <section id="tab-dashboard" class="space-y-6">
+      
+      <!-- CARDS RESUMO -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div class="card-dark p-5 rounded-xl border-l-4 border-l-purple-500">
           <p class="text-xs text-slate-400 uppercase font-semibold">Migração & Histórico</p>
@@ -74,10 +77,10 @@
           <h3 class="text-xl font-bold text-white mt-1">Bet dá Sorte</h3>
           <p class="text-xs text-emerald-400 mt-2"><i class="fa-solid fa-check-circle mr-1"></i>Apenas canal oficial da Single</p>
         </div>
-        <div class="card-dark p-5 rounded-xl border-l-4 border-l-blue-500">
-          <p class="text-xs text-slate-400 uppercase font-semibold">Tempo de Propagação PIX</p>
-          <h3 class="text-xl font-bold text-white mt-1">2 Horas</h3>
-          <p class="text-xs text-slate-400 mt-2"><i class="fa-solid fa-clock mr-1"></i>Aguardar atualização do provedor</p>
+        <div class="card-dark p-5 rounded-xl border-l-4 border-l-amber-500">
+          <p class="text-xs text-slate-400 uppercase font-semibold">Alerta de Saques</p>
+          <h3 class="text-xl font-bold text-amber-400 mt-1">Máx 1 Hora</h3>
+          <p class="text-xs text-amber-300 mt-2"><i class="fa-solid fa-clock-rotate-left mr-1"></i>Acompanhamento constante</p>
         </div>
         <div class="card-dark p-5 rounded-xl border-l-4 border-l-red-500">
           <p class="text-xs text-slate-400 uppercase font-semibold">Jogo Responsável & EBAC</p>
@@ -86,6 +89,46 @@
         </div>
       </div>
 
+      <!-- NOVO ALERTA OPERACIONAL: SAQUES EM PROCESSAMENTO -->
+      <div class="p-6 bg-slate-900/90 rounded-xl border-2 border-amber-500/50 amber-glow space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div class="flex items-center space-x-3">
+            <div class="p-3 bg-amber-500/20 text-amber-400 rounded-xl border border-amber-500/30">
+              <i class="fa-solid fa-triangle-exclamation text-2xl animate-pulse"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-white uppercase tracking-wide">Atualização de Aviso: Saques em Processamento</h3>
+              <p class="text-xs text-amber-400 font-semibold">Acompanhamento obrigatório durante todo o expediente</p>
+            </div>
+          </div>
+          <span class="text-xs bg-amber-950 text-amber-300 px-3 py-1 rounded-full border border-amber-500/30 font-mono font-bold">Atenção Prioritária</span>
+        </div>
+
+        <div class="space-y-3 text-xs text-slate-200 leading-relaxed">
+          <p class="font-semibold text-white text-sm">
+            Reforçando um ponto importante sobre os saques em processamento:
+          </p>
+          
+          <div class="p-4 bg-slate-950 rounded-lg border border-amber-500/30 space-y-2">
+            <p class="text-amber-300 font-bold text-xs">
+              ⏱️ <strong>Prazo Máximo de Retenção:</strong> O prazo máximo para um saque permanecer em processamento é de <strong>1 hora</strong>.
+            </p>
+            <p class="text-slate-300">
+              Por isso, é essencial que esse acompanhamento seja feito ao longo de todo o expediente, incluindo rigorosamente na <strong>chegada ao turno</strong> e <strong>antes da saída</strong>.
+            </p>
+          </div>
+
+          <div class="p-3 bg-red-950/30 rounded-lg border border-red-500/30 text-slate-200">
+            📌 <strong>Ação em caso de estouro de prazo:</strong> Caso o saque ultrapasse esse período de <strong>1 hora</strong>, ele deve ser encaminhado para atualização, conforme o fluxo estabelecido.
+          </div>
+
+          <p class="text-slate-400 italic">
+            Contamos com a atenção de todos para garantir a agilidade nas tratativas.
+          </p>
+        </div>
+      </div>
+
+      <!-- GUIA DE AVALIAÇÃO DE MÓDULOS -->
       <div class="card-dark p-6 rounded-xl border border-slate-800 purple-glow">
         <h2 class="text-lg font-bold text-white mb-4 flex items-center">
           <i class="fa-solid fa-display text-purple-400 mr-2"></i>Guia de Avaliação de Módulos (BKO / Sistema)
@@ -100,7 +143,7 @@
           <div class="p-4 bg-slate-900/60 rounded-lg border border-slate-800">
             <h4 class="font-bold text-emerald-400 text-sm mb-2"><i class="fa-solid fa-wallet mr-2"></i>Carteira & Transacional</h4>
             <p class="text-xs text-slate-300 leading-relaxed">
-              Cruze o <strong>Saldo Total</strong> contra o volume de <strong>Total de Depósitos vs. Saques</strong>. Confira os horários dos últimos saques para evitar concorrência transacional no gateway.
+              Cruze o <strong>Saldo Total</strong> contra o volume de <strong>Total de Depósitos vs. Saques</strong>. Confira os horários dos últimos saques para evitar concorrência transacional no gateway e estouro do prazo de 1h.
             </p>
           </div>
         </div>
@@ -117,43 +160,156 @@
             </div>
             <div>
               <h2 class="text-xl font-bold text-white">Manual Operacional de Jogo Responsável & COMPULSAFE</h2>
-              <p class="text-xs text-slate-400">Protocolos obrigatórios para prevenção à ludopatia e mitigação de danos</p>
+              <p class="text-xs text-slate-400">Protocolos obrigatórios para prevenção à ludopatia, tratativa retroativa e integração com Blip e Discord</p>
             </div>
           </div>
-          <span class="text-xs bg-red-950 text-red-300 px-3 py-1 rounded-full border border-red-500/30">Uso Obrigatório pelo BKO</span>
+          <a href="https://compulsafe.com.br/contas/login/?next=/" target="_blank" class="text-xs bg-red-600 hover:bg-red-500 text-white font-bold px-3 py-2 rounded-lg border border-red-400/30 flex items-center shadow-lg transition">
+            <i class="fa-solid fa-arrow-up-right-from-square mr-1.5"></i>Acessar Compulsafe
+          </a>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="p-5 bg-slate-900/80 rounded-xl border border-slate-800 space-y-3">
-            <h3 class="font-bold text-red-400 text-sm flex items-center">
-              <i class="fa-solid fa-database mr-2"></i>1. Registro e Consulta no COMPULSAFE
+        <div class="space-y-6">
+
+          <!-- INFORMAÇÃO GERAL E ESCOPO RETROATIVO -->
+          <div class="p-5 bg-slate-900/90 rounded-xl border border-red-500/40 space-y-3">
+            <h3 class="font-bold text-red-300 text-sm flex items-center">
+              <i class="fa-solid fa-bullhorn text-red-400 mr-2"></i>Diretriz Geral do Compulsafe & Abrangência Retroativa
             </h3>
-            <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside">
-              <li><strong>Mapeamento Obrigatório:</strong> Todos os encerramentos, suspensões ou relatos de perda de controle financeiro/emocional devem ser registrados na base do <strong>COMPULSAFE</strong>.</li>
-              <li><strong>Contas com Movimentação Ativa:</strong> Se uma conta em bloqueio centralizado tentar efetuar movimentações, insira na planilha de acompanhamento e acione a supervisão.</li>
-              <li><strong>Trava Operacional:</strong> Apontamento ativo no COMPULSAFE inviabiliza liberação de saldo de aposta.</li>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Passamos a utilizar o <strong>Compulsafe</strong> (<a href="https://compulsafe.com.br/contas/login/?next=/" target="_blank" class="text-cyan-400 underline font-mono">https://compulsafe.com.br/contas/login/?next=/</a>) para registro adicional dos bloqueios de jogadores que alegam ou que identificamos com <strong>Transtorno do Jogo (Ludopatia)</strong>.
+            </p>
+            <div class="p-3 bg-red-950/30 rounded-lg border border-red-500/30 text-xs text-red-300 font-medium">
+              ⚠️ <strong>Importante:</strong> A tratativa abrange inclusive os casos tratados anteriormente à implantação da ferramenta, ou seja, do <strong>início do ano em diante (retroativo)</strong>.
+            </div>
+          </div>
+
+          <!-- PASSO A PASSO APÓS BLOQUEIO E CADASTRO -->
+          <div class="p-5 bg-slate-900/90 rounded-xl border border-slate-800 space-y-4">
+            <h3 class="font-bold text-amber-400 text-sm flex items-center border-b border-slate-800 pb-2">
+              <i class="fa-solid fa-list-check text-amber-400 mr-2"></i>Passo a Passo Obrigatório (Após Bloqueio na Single e Cadastro no Compulsafe)
+            </h3>
+            <p class="text-xs text-slate-300">
+              Pensando em otimizar as tratativas da equipe, após efetuar o bloqueio na Single e o cadastro no Compulsafe, siga rigorosamente as seguintes regras básicas:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              
+              <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 space-y-1">
+                <p class="font-bold text-purple-400 flex items-center"><i class="fa-solid fa-note-sticky mr-1.5"></i>1. Nota Interna na Single</p>
+                <p class="text-slate-300">Inserir obrigatoriamente a nota interna no perfil do cliente:</p>
+                <p class="font-mono text-amber-300 bg-slate-900 p-1.5 rounded border border-slate-800 text-[11px]">"Usuário cadastrado no Compulsafe"</p>
+              </div>
+
+              <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 space-y-1">
+                <p class="font-bold text-indigo-400 flex items-center"><i class="fa-brands fa-discord mr-1.5"></i>2. Informação Interna no Discord</p>
+                <p class="text-slate-300">Registrar no canal do Discord a mensagem:</p>
+                <p class="font-mono text-amber-300 bg-slate-900 p-1.5 rounded border border-slate-800 text-[11px]">"Usuário cadastrado no Compulsafe"</p>
+              </div>
+
+              <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 space-y-1">
+                <p class="font-bold text-emerald-400 flex items-center"><i class="fa-solid fa-icons mr-1.5"></i>3. Confirmação Visual no Discord</p>
+                <p class="text-slate-300">Usar o emoji 📌 quando o caso já estiver totalmente tratado e finalizado.</p>
+              </div>
+
+              <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 space-y-1">
+                <p class="font-bold text-cyan-400 flex items-center"><i class="fa-solid fa-link mr-1.5"></i>4. Tratativa Retroativa (Link no Flash)</p>
+                <p class="text-slate-300">Como a tratativa será retroativa, adicionar o link do tópico no Flash do último caso verificado.</p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- OBRIGATORIEDADES DO NOVO FLUXO ADICIONAL (BLIP E ANEXOS) -->
+          <div class="p-5 bg-slate-900/90 rounded-xl border border-slate-800 space-y-4">
+            <h3 class="font-bold text-cyan-400 text-sm flex items-center border-b border-slate-800 pb-2">
+              <i class="fa-solid fa-file-arrow-up text-cyan-400 mr-2"></i>Obrigatoriedades do Fluxo Adicional (Conferência no Blip e Anexos)
+            </h3>
+            <p class="text-xs text-slate-300">
+              Lembrem-se que esse é um fluxo adicional ao procedimento padrão. Tornam-se obrigatórios os seguintes itens:
+            </p>
+
+            <ul class="text-xs text-slate-300 space-y-3 list-none">
+              <li class="p-3 bg-slate-950 rounded-lg border border-slate-800 flex items-start space-x-2">
+                <i class="fa-solid fa-magnifying-glass text-cyan-400 mt-0.5 shrink-0"></i>
+                <div>
+                  <strong class="text-white">Acessar Conversa no Blip e Realizar Double Check:</strong>
+                  <p class="text-slate-400 mt-0.5">Vocês serão os responsáveis por verificar detalhadamente a conversa no Blip para validar se devemos ou não prosseguir com a solicitação registrada.</p>
+                </div>
+              </li>
+
+              <li class="p-3 bg-slate-950 rounded-lg border border-slate-800 flex items-start space-x-2">
+                <i class="fa-solid fa-download text-emerald-400 mt-0.5 shrink-0"></i>
+                <div>
+                  <strong class="text-white">Baixar Conversa no Blip para Anexo no Compulsafe:</strong>
+                  <p class="text-slate-400 mt-0.5">Baixar e anexar ao Compulsafe apenas as conversas que dizem respeito diretamente à solicitação do bloqueio.</p>
+                </div>
+              </li>
+
+              <li class="p-3 bg-slate-950 rounded-lg border border-slate-800 flex items-start space-x-2">
+                <i class="fa-solid fa-file-zipper text-amber-400 mt-0.5 shrink-0"></i>
+                <div>
+                  <strong class="text-white">Tratamento de Múltiplos Contatos (Criar Arquivo ZIP):</strong>
+                  <p class="text-slate-400 mt-0.5">Em alguns casos, o usuário possui mais de um contato sobre o assunto. Quando houver mais de um arquivo para anexar, vocês poderão baixar tudo, colocar em uma pasta e criar um <strong>único arquivo .ZIP</strong> para anexar no Compulsafe.</p>
+                </div>
+              </li>
             </ul>
           </div>
 
-          <div class="p-5 bg-slate-900/80 rounded-xl border border-slate-800 space-y-3">
-            <h3 class="font-bold text-emerald-400 text-sm flex items-center">
-              <i class="fa-solid fa-user-doctor mr-2"></i>2. Atendimento & Suporte Psicológico (EBAC)
-            </h3>
-            <div class="text-xs text-slate-300 space-y-2">
-              <p>O atendimento ao cliente deve acolher e direcionar o apostador para o suporte gratuito e confidencial oferecido via EBAC.</p>
-              <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 font-mono text-[11px] text-cyan-300 space-y-1">
-                <p>• Pixbet: <a href="https://ebacbrasil.com.br/pixbet/" target="_blank" class="underline">ebacbrasil.com.br/pixbet/</a></p>
-                <p>• GanheiBet: <a href="https://ebacbrasil.com.br/ganheibet/" target="_blank" class="underline">ebacbrasil.com.br/ganheibet/</a></p>
-                <p>• Bet dá Sorte: <a href="https://ebacbrasil.com.br/betdasorte/" target="_blank" class="underline">ebacbrasil.com.br/betdasorte/</a></p>
+          <!-- AVISO DE ATENÇÃO E DELICADEZA DO TEMA -->
+          <div class="p-4 bg-amber-950/40 rounded-xl border border-amber-500/40 text-xs text-amber-200 flex items-start space-x-3">
+            <i class="fa-solid fa-triangle-exclamation text-amber-400 text-lg mt-0.5 shrink-0"></i>
+            <div>
+              <strong class="text-amber-300 font-bold">Aviso Importante à Equipe:</strong>
+              <p class="mt-1 leading-relaxed">
+                Pessoal, o fluxo é novo, envolve uma nova ferramenta e trata de um assunto muito delicado. Portanto, tenham <strong>muito cuidado e atenção rigorosa</strong> com a tratativa de vocês em cada um dos casos.
+              </p>
+            </div>
+          </div>
+
+          <!-- DEMAIS PROCEDIMENTOS EXISTENTES -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="p-5 bg-slate-900/80 rounded-xl border border-slate-800 space-y-3">
+              <h3 class="font-bold text-red-400 text-sm flex items-center">
+                <i class="fa-solid fa-database mr-2"></i>1. Registro e Consulta no COMPULSAFE
+              </h3>
+              <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside">
+                <li><strong>Mapeamento Obrigatório:</strong> Todos os encerramentos, suspensões ou relatos de perda de controle financeiro/emocional devem ser registrados na base do <strong>COMPULSAFE</strong>.</li>
+                <li><strong>Contas com Movimentação Ativa:</strong> Se uma conta em bloqueio centralizado tentar efetuar movimentações, insira na planilha de acompanhamento e acione a supervisão.</li>
+                <li><strong>Trava Operacional:</strong> Apontamento ativo no COMPULSAFE inviabiliza liberação de saldo de aposta.</li>
+              </ul>
+            </div>
+
+            <div class="p-5 bg-slate-900/80 rounded-xl border border-slate-800 space-y-3">
+              <h3 class="font-bold text-emerald-400 text-sm flex items-center">
+                <i class="fa-solid fa-user-doctor mr-2"></i>2. Atendimento & Suporte Psicológico (EBAC)
+              </h3>
+              <div class="text-xs text-slate-300 space-y-2">
+                <p>O atendimento ao cliente deve acolher e direcionar o apostador para o suporte gratuito e confidencial oferecido via EBAC.</p>
+                <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 font-mono text-[11px] text-cyan-300 space-y-1">
+                  <p>• Pixbet: <a href="https://ebacbrasil.com.br/pixbet/" target="_blank" class="underline">ebacbrasil.com.br/pixbet/</a></p>
+                  <p>• GanheiBet: <a href="https://ebacbrasil.com.br/ganheibet/" target="_blank" class="underline">ebacbrasil.com.br/ganheibet/</a></p>
+                  <p>• Bet dá Sorte: <a href="https://ebacbrasil.com.br/betdasorte/" target="_blank" class="underline">ebacbrasil.com.br/betdasorte/</a></p>
+                </div>
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </section>
 
     <!-- ==================== TAB 3: REGULAMENTAÇÕES, SIGAP & BCB 766/2026 ==================== -->
     <section id="tab-portaria" class="space-y-6 hidden">
+
+      <!-- REFORÇO DE AVISO: SAQUES EM PROCESSAMENTO -->
+      <div class="p-5 bg-slate-900/90 rounded-xl border border-amber-500/40 space-y-3">
+        <h3 class="font-bold text-amber-300 text-sm flex items-center">
+          <i class="fa-solid fa-clock-rotate-left text-amber-400 mr-2"></i>Aviso Operacional: Prazo Máximo de Saque em Processamento
+        </h3>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          Reforçando o controle rigoroso: O prazo máximo para um saque permanecer em processamento é de <strong>1 hora</strong>. O acompanhamento deve ser contínuo (ao longo do expediente, na chegada e antes da saída). Ultrapassada 1 hora, o saque deve ser imediatamente encaminhado para atualização.
+        </p>
+      </div>
       
       <!-- CARD 1: INSTRUÇÃO NORMATIVA BCB Nº 766/2026 (CLIPPING REGULATÓRIO Z.RO) -->
       <div class="card-dark p-6 rounded-xl border border-blue-500/40 purple-glow">
@@ -174,10 +330,7 @@
           A <strong>Instrução Normativa BCB nº 766/2026</strong> atualiza o Manual Operacional do DICT, trazendo ajustes nas regras do Pix para fortalecer os processos de devolução, contestação e rastreamento de transações. As mudanças também incluem atualizações específicas para o Pix Automático e a ampliação do prazo para contestação de devoluções para <strong>80 dias</strong>.
         </p>
 
-        <!-- SEÇÕES EM DESTAQUE E VIGÊNCIA -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          
-          <!-- EM DESTAQUE -->
           <div class="p-5 bg-slate-900/80 rounded-xl border border-slate-800 space-y-3">
             <h3 class="font-bold text-amber-400 text-sm flex items-center border-b border-slate-800 pb-2">
               <i class="fa-solid fa-bullhorn text-amber-400 mr-2"></i>Em Destaque
@@ -191,12 +344,10 @@
             </ul>
           </div>
 
-          <!-- CRONOGRAMA DE VIGÊNCIA -->
           <div class="p-5 bg-slate-900/80 rounded-xl border border-slate-800 space-y-4">
             <h3 class="font-bold text-cyan-400 text-sm flex items-center border-b border-slate-800 pb-2">
               <i class="fa-solid fa-calendar-days text-cyan-400 mr-2"></i>Cronograma de Vigência
             </h3>
-            
             <div class="p-3 bg-slate-950 rounded-lg border-l-4 border-l-cyan-500 space-y-1">
               <p class="font-bold text-cyan-300 text-xs">Vigência a partir de 01/09/2026:</p>
               <ul class="text-xs text-slate-300 list-disc list-inside space-y-0.5 pl-1">
@@ -204,7 +355,6 @@
                 <li>Alterações no fluxo de Recuperação de Valores (MED).</li>
               </ul>
             </div>
-
             <div class="p-3 bg-slate-950 rounded-lg border-l-4 border-l-purple-500 space-y-1">
               <p class="font-bold text-purple-300 text-xs">Vigência a partir de 26/10/2026:</p>
               <ul class="text-xs text-slate-300 list-disc list-inside space-y-0.5 pl-1">
@@ -213,10 +363,8 @@
               </ul>
             </div>
           </div>
-
         </div>
 
-        <!-- RECOMENDAÇÕES OPERACIONAIS Z.RO -->
         <div class="p-5 bg-slate-900/60 rounded-xl border border-slate-800 space-y-3">
           <h3 class="font-bold text-white text-xs uppercase tracking-wider flex items-center border-b border-slate-800 pb-2">
             <i class="fa-solid fa-circle-info text-blue-400 mr-2"></i>Considerações Operacionais & Impactos Internos
@@ -240,7 +388,6 @@
             </div>
           </div>
         </div>
-
       </div>
 
       <!-- CARD 2: DIRETRIZES SIGAP / STF -->
@@ -502,34 +649,34 @@
 
     const masterQuestionBank = [
       {
-        question: "[BCB nº 766/2026] Qual foi o novo prazo estabelecido pela Instrução Normativa BCB nº 766/2026 para contestação de devoluções por fraude no Pix?",
+        question: "[Aviso de Saques] Qual o prazo máximo permitido para um saque permanecer em processamento antes de ser encaminhado para atualização?",
         options: [
-          "Ampliação para 80 dias do prazo de contestação.",
-          "Redução para 30 dias corridos.",
-          "Prazo fixo de 15 dias úteis.",
-          "O prazo não sofreu alterações."
+          "O prazo máximo é de 1 hora.",
+          "O prazo máximo é de 24 horas.",
+          "O prazo máximo é de 3 horas úteis.",
+          "Não há prazo estipulado."
         ],
-        correctAnswerText: "Ampliação para 80 dias do prazo de contestação."
+        correctAnswerText: "O prazo máximo é de 1 hora."
       },
       {
-        question: "[Restrições SIGAP] No card Restrições SIGAP do jogador, o que significa quando o campo Operações aparece 'Desbloqueado'?",
+        question: "[Compulsafe / Anexos] Como proceder no Compulsafe quando o usuário possui mais de um contato/conversa referente ao bloqueio por Ludopatia?",
         options: [
-          "Trata-se de restrição de Bolsa Família/BPC, que por decisão do STF não impede o cliente de operar normalmente.",
-          "O cliente está liberado por decisão da supervisão interna.",
-          "Indica que a conta não possui nenhum vínculo com o SIGAP.",
-          "O cliente precisa alterar a senha antes de poder apostar."
+          "Baixar todas as conversas do Blip, colocar em uma pasta e subir um único arquivo .ZIP no Compulsafe.",
+          "Anexar apenas o primeiro atendimento e ignorar os demais.",
+          "Enviar os arquivos por e-mail para a equipe de TI.",
+          "Não é necessário anexar conversas no Compulsafe."
         ],
-        correctAnswerText: "Trata-se de restrição de Bolsa Família/BPC, que por decisão do STF não impede o cliente de operar normalmente."
+        correctAnswerText: "Baixar todas as conversas do Blip, colocar em uma pasta e subir um único arquivo .ZIP no Compulsafe."
       },
       {
-        question: "[BCB nº 766/2026] A partir de 26/10/2026, qual novo atributo técnico passa a ser incluído no rastreamento de transações?",
+        question: "[Compulsafe / Confirmação] Qual o procedimento visual no Discord após concluir totalmente a tratativa e o cadastro do usuário no Compulsafe?",
         options: [
-          "Atributo TransactionDepth.",
-          "Atributo UserAuthCode.",
-          "Atributo PixRecoveryToken.",
-          "Atributo AccountSecurityId."
+          "Utilizar o emoji 📌 na publicação do caso no Discord.",
+          "Apagar a mensagem do canal do Discord.",
+          "Enviar mensagem no privado do Gerente.",
+          "Marcar a tag @Todos no canal geral."
         ],
-        correctAnswerText: "Atributo TransactionDepth."
+        correctAnswerText: "Utilizar o emoji 📌 na publicação do caso no Discord."
       }
     ];
 
