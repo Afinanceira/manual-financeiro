@@ -48,7 +48,7 @@
         <i class="fa-solid fa-book-bookmark mr-1.5"></i>Regulamentações & BCB
       </button>
       <button onclick="switchTab('quiz')" id="btn-tab-quiz" class="px-3 py-2 text-xs font-medium rounded-lg text-slate-300 hover:bg-slate-800 transition">
-        <i class="fa-solid fa-graduation-cap mr-1.5"></i>Quiz & Ranking
+        <i class="fa-solid fa-graduation-cap mr-1.5"></i>Quiz & Desempenho
       </button>
       <button onclick="switchTab('avisos')" id="btn-tab-avisos" class="px-3 py-2 text-xs font-medium rounded-lg text-cyan-400 hover:bg-slate-800 transition border border-cyan-500/30">
         <i class="fa-solid fa-bullhorn mr-1.5"></i>Mural
@@ -502,7 +502,7 @@
 
     </section>
 
-    <!-- ==================== TAB 4: QUIZ & RANKING PÚBLICO ==================== -->
+    <!-- ==================== TAB 4: QUIZ & PAINEL DE DESEMPENHO ==================== -->
     <section id="tab-quiz" class="hidden space-y-8">
       <div id="quiz-start-box" class="card-dark p-8 rounded-2xl max-w-xl mx-auto space-y-6 gold-glow border border-purple-500/30">
         <div class="text-center space-y-2">
@@ -548,7 +548,7 @@
           <i class="fa-solid fa-trophy text-4xl"></i>
         </div>
         <h2 class="text-2xl font-bold text-white">Quiz Finalizado!</h2>
-        <p class="text-xs text-slate-400">Sua pontuação foi registrada no Ranking Geral abaixo.</p>
+        <p class="text-xs text-slate-400">Sua pontuação foi registrada no painel de desempenho abaixo.</p>
 
         <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
           <p class="text-xs text-slate-400">Sua Pontuação Final</p>
@@ -560,9 +560,9 @@
         <div class="p-4 bg-slate-900 border-b border-slate-800 flex justify-between items-center">
           <div>
             <h3 class="font-bold text-white text-base flex items-center">
-              <i class="fa-solid fa-ranking-star text-amber-400 mr-2"></i>Ranking dos Analistas
+              <i class="fa-solid fa-users-viewfinder text-purple-400 mr-2"></i>Resultados dos Analistas
             </h3>
-            <p class="text-xs text-slate-400">Classificação das melhores pontuações</p>
+            <p class="text-xs text-slate-400">Ordenado por pontuação (10 pts) e maior tempo restante em segundos</p>
           </div>
           <span class="text-xs bg-purple-900/50 text-purple-300 px-3 py-1 rounded-full border border-purple-500/30">Tempo Real</span>
         </div>
@@ -571,16 +571,15 @@
           <table class="w-full text-left text-xs text-slate-300">
             <thead class="bg-slate-950 text-slate-400 uppercase font-semibold border-b border-slate-800">
               <tr>
-                <th class="p-4 text-center">Posição</th>
                 <th class="p-4">Analista</th>
                 <th class="p-4">Pontuação</th>
-                <th class="p-4">Tempo Restante</th>
+                <th class="p-4">Tempo Restante (s)</th>
                 <th class="p-4">Data do Quiz</th>
               </tr>
             </thead>
             <tbody id="public-ranking-table" class="divide-y divide-slate-800">
               <tr>
-                <td colspan="5" class="p-4 text-center text-slate-500">Carregando ranking...</td>
+                <td colspan="4" class="p-4 text-center text-slate-500">Carregando resultados...</td>
               </tr>
             </tbody>
           </table>
@@ -683,7 +682,7 @@
                 <tr>
                   <th class="p-4">Analista</th>
                   <th class="p-4">Pontuação</th>
-                  <th class="p-4">Tempo Restante</th>
+                  <th class="p-4">Tempo Restante (s)</th>
                   <th class="p-4">Data/Hora</th>
                 </tr>
               </thead>
@@ -959,17 +958,17 @@
       db.ref('resultados_quiz_financeiro').push(payload);
     }
 
+    // ORDENAÇÃO: 1º PONTUAÇÃO (PONTOS) | 2º MAIOR TEMPO RESTANTE (SEGUNDOS)
     function listenPublicRankingData() {
       db.ref('resultados_quiz_financeiro').on('value', (snapshot) => {
         const tableBody = document.getElementById('public-ranking-table'); tableBody.innerHTML = '';
-        if (!snapshot.exists()) { tableBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">Nenhum resultado registrado ainda.</td></tr>`; return; }
+        if (!snapshot.exists()) { tableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">Nenhum resultado registrado ainda.</td></tr>`; return; }
 
         const entries = Object.values(snapshot.val()).sort((a, b) => b.scorePoints !== a.scorePoints ? b.scorePoints - a.scorePoints : (b.tempoRestanteSegundos || 0) - (a.tempoRestanteSegundos || 0));
-        entries.forEach((entry, idx) => {
+        entries.forEach((entry) => {
           const tr = document.createElement('tr'); tr.className = "hover:bg-slate-900/50 transition border-b border-slate-800";
           const pts = entry.scorePoints || 0; const notaColor = pts >= 10 ? 'text-emerald-400' : 'text-red-400';
-          let medal = `#${idx + 1}`; if (idx === 0) medal = '🥇 1º'; if (idx === 1) medal = '🥈 2º'; if (idx === 2) medal = '🥉 3º';
-          tr.innerHTML = `<td class="p-4 text-center font-bold text-amber-400">${medal}</td><td class="p-4 font-semibold text-white">${entry.nome}</td><td class="p-4 font-bold ${notaColor}">${pts} pts</td><td class="p-4 text-slate-400">${entry.tempoRestante || '--'}</td><td class="p-4 text-slate-500">${entry.dataHora}</td>`;
+          tr.innerHTML = `<td class="p-4 font-semibold text-white">${entry.nome}</td><td class="p-4 font-bold ${notaColor}">${pts} pts</td><td class="p-4 font-mono text-amber-300 font-bold">${entry.tempoRestante || '0s'}</td><td class="p-4 text-slate-500">${entry.dataHora}</td>`;
           tableBody.appendChild(tr);
         });
       });
@@ -1064,11 +1063,11 @@
         const tableBody = document.getElementById('admin-results-table'); tableBody.innerHTML = '';
         if (!snapshot.exists()) { tableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">Nenhum resultado registrado.</td></tr>`; return; }
 
-        const entries = Object.values(snapshot.val()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+        const entries = Object.values(snapshot.val()).sort((a, b) => b.scorePoints !== a.scorePoints ? b.scorePoints - a.scorePoints : (b.tempoRestanteSegundos || 0) - (a.tempoRestanteSegundos || 0));
         entries.forEach(entry => {
           const tr = document.createElement('tr'); tr.className = "hover:bg-slate-900/50 transition border-b border-slate-800";
           const pts = entry.scorePoints || 0; const notaColor = pts >= 10 ? 'text-emerald-400' : 'text-red-400';
-          tr.innerHTML = `<td class="p-4 font-semibold text-white">${entry.nome}</td><td class="p-4 font-bold ${notaColor}">${pts} / 10 pts</td><td class="p-4 text-slate-400">${entry.tempoRestante || '--'} restante</td><td class="p-4 text-slate-500">${entry.dataHora}</td>`;
+          tr.innerHTML = `<td class="p-4 font-semibold text-white">${entry.nome}</td><td class="p-4 font-bold ${notaColor}">${pts} / 10 pts</td><td class="p-4 font-mono text-amber-300 font-bold">${entry.tempoRestante || '0s'}</td><td class="p-4 text-slate-500">${entry.dataHora}</td>`;
           tableBody.appendChild(tr);
         });
       });
