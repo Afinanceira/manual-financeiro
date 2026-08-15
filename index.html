@@ -17,9 +17,8 @@
   <style>
     body { background-color: #0b0f19; color: #e2e8f0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     .card-dark { background-color: #131b2e; border: 1px solid #1e293b; }
-    .accent-purple { color: #a855f7; }
-    .bg-accent-purple { background-color: #a855f7; }
-    .gold-glow { box-shadow: 0 0 15px rgba(234, 179, 8, 0.2); }
+    .gold-glow { box-shadow: 0 0 15px rgba(234, 179, 8, 0.15); }
+    .purple-glow { box-shadow: 0 0 20px rgba(168, 85, 247, 0.15); }
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -27,7 +26,7 @@
   <!-- NAVIGATION BAR -->
   <nav class="bg-slate-900 border-b border-slate-800 px-6 py-4 flex flex-wrap justify-between items-center shadow-lg sticky top-0 z-50">
     <div class="flex items-center space-x-3">
-      <div class="p-2 bg-purple-600/20 text-purple-400 rounded-lg border border-purple-500/30">
+      <div class="p-2.5 bg-purple-600/20 text-purple-400 rounded-xl border border-purple-500/30">
         <i class="fa-solid fa-chart-pie text-xl"></i>
       </div>
       <div>
@@ -71,7 +70,7 @@
         <div class="card-dark p-5 rounded-xl border-l-4 border-l-blue-500">
           <p class="text-xs text-slate-400 uppercase font-semibold">Tempo de Propagação PIX</p>
           <h3 class="text-xl font-bold text-white mt-1">2 Horas</h3>
-          <p class="text-xs text-slate-400 mt-2"><i class="fa-solid fa-clock mr-1"></i>Para atualização no provedor</p>
+          <p class="text-xs text-slate-400 mt-2"><i class="fa-solid fa-clock mr-1"></i>Aguardar atualização do provedor</p>
         </div>
         <div class="card-dark p-5 rounded-xl border-l-4 border-l-red-500">
           <p class="text-xs text-slate-400 uppercase font-semibold">Jogo Responsável</p>
@@ -81,7 +80,7 @@
       </div>
 
       <!-- GUIA DE INTERPRETAÇÃO DO PAINEL DE BKO -->
-      <div class="card-dark p-6 rounded-xl border border-slate-800">
+      <div class="card-dark p-6 rounded-xl border border-slate-800 purple-glow">
         <h2 class="text-lg font-bold text-white mb-4 flex items-center">
           <i class="fa-solid fa-display text-purple-400 mr-2"></i>Guia de Avaliação de Módulos (BKO / Sistema)
         </h2>
@@ -191,10 +190,10 @@
       <div id="quiz-start-box" class="card-dark p-8 rounded-2xl max-w-xl mx-auto space-y-6 gold-glow border border-purple-500/30">
         <div class="text-center space-y-2">
           <div class="inline-block p-4 bg-purple-600/20 rounded-full text-purple-400 mb-2">
-            <i class="fa-solid fa-pen-nib text-3xl"></i>
+            <i class="fa-solid fa-shuffle text-3xl"></i>
           </div>
-          <h2 class="text-2xl font-bold text-white">Quiz de Capacitação - BKO & Financeiro</h2>
-          <p class="text-xs text-slate-400">Suas respostas serão salvas em tempo real no banco de dados.</p>
+          <h2 class="text-2xl font-bold text-white">Quiz Rápido - BKO & Financeiro</h2>
+          <p class="text-xs text-slate-400">Você terá <strong>3 perguntas</strong> baseadas no Dashboard e <strong>40 segundos</strong> no total para responder (10 pontos por acerto).</p>
         </div>
 
         <div class="space-y-4 text-left">
@@ -212,7 +211,7 @@
             </select>
           </div>
           <button onclick="startQuiz()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 rounded-lg shadow-lg transition duration-200 mt-2">
-            Iniciar Quiz Agora <i class="fa-solid fa-arrow-right ml-2"></i>
+            Iniciar Quiz (40 Segundos) <i class="fa-solid fa-stopwatch ml-2"></i>
           </button>
         </div>
       </div>
@@ -222,8 +221,8 @@
         
         <!-- BARRA DE PROGRESSO & TEMPO -->
         <div class="flex justify-between items-center text-xs font-semibold text-slate-400 border-b border-slate-800 pb-3">
-          <span id="question-progress">Questão 1 de 5</span>
-          <span id="quiz-timer" class="text-amber-400"><i class="fa-solid fa-stopwatch mr-1"></i>00:00</span>
+          <span id="question-progress">Questão 1 de 3</span>
+          <span id="quiz-timer" class="text-amber-400 font-bold text-sm"><i class="fa-solid fa-stopwatch mr-1"></i>00:40</span>
         </div>
 
         <!-- PERGUNTA -->
@@ -250,15 +249,15 @@
           <i class="fa-solid fa-trophy text-4xl"></i>
         </div>
         <h2 class="text-2xl font-bold text-white">Quiz Finalizado!</h2>
-        <p class="text-xs text-slate-400">Seu resultado foi registrado em tempo real na base administrativa.</p>
+        <p class="text-xs text-slate-400">Seu resultado foi registrado em tempo real no painel administrativo.</p>
 
         <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
           <p class="text-xs text-slate-400">Sua Pontuação Final</p>
-          <p id="final-score" class="text-4xl font-extrabold text-purple-400">0 / 5</p>
+          <p id="final-score" class="text-4xl font-extrabold text-purple-400">0 / 30 pts</p>
         </div>
 
         <button onclick="resetQuiz()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-2.5 rounded-lg transition">
-          Refazer Quiz
+          Novo Quiz
         </button>
       </div>
 
@@ -300,8 +299,8 @@
                 <tr>
                   <th class="p-4">Colaborador</th>
                   <th class="p-4">Cargo/Equipe</th>
-                  <th class="p-4">Nota / Acertos</th>
-                  <th class="p-4">Tempo</th>
+                  <th class="p-4">Pontuação</th>
+                  <th class="p-4">Tempo Restante</th>
                   <th class="p-4">Data/Hora</th>
                 </tr>
               </thead>
@@ -336,66 +335,97 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 2. QUIZ DATA (5 QUESTÕES TÉCNICAS)
-    const quizQuestions = [
+    // 2. BANCO DE QUESTÕES (ESTRITAMENTE BASEADO NO DASHBOARD)
+    const masterQuestionBank = [
       {
-        question: "[IR / Contas Excluídas] Como deve ser realizada a extração do relatório de Imposto de Renda para uma conta sob deleção?",
+        question: "[Flabet / Transações] Qual é a regra sobre relatórios de transações na Flabet e qual a orientação em relação ao cliente?",
         options: [
-          "Enviar um e-mail para a TI solicitando o banco de dados.",
-          "Acessar Extrato > Relatório de IR > Inserir o ano fiscal > Nova solicitação > Aguardar a extração e baixar em Ações.",
-          "Não é possível extrair o relatório de contas excluídas.",
-          "Baixar a planilha geral de saques do mês."
+          "Só é possível emitir relatórios após 07/04/2024, e essa data limite NÃO deve ser repassada diretamente ao cliente.",
+          "Qualquer relatório pode ser baixado normalmente e o limite de data deve ser avisado no chat.",
+          "Relatórios só cobrem o mês atual e o cliente deve criar outra conta.",
+          "Todas as transações do ano passado estão disponíveis via e-mail."
         ],
-        correct: 1
+        correctAnswerText: "Só é possível emitir relatórios após 07/04/2024, e essa data limite NÃO deve ser repassada diretamente ao cliente."
       },
       {
-        question: "[Bet dá Sorte] Onde devem ser direcionadas as solicitações de reembolso e creditações para manter a integridade da plataforma?",
+        question: "[Bet dá Sorte] Para manter a integridade da plataforma, onde devem ser direcionadas as solicitações de reembolso e creditações?",
         options: [
-          "No grupo geral do Discord.",
-          "Exclusivamente na single da Bet dá Sorte.",
-          "No Skype do suporte geral.",
-          "Diretamente com o gateway de pagamento."
+          "Apenas no canal oficial da Single da Bet dá Sorte.",
+          "No grupo geral do Discord da empresa.",
+          "Diretamente ao provedor de pagamento PIX.",
+          "No chat público de suporte do site."
         ],
-        correct: 1
+        correctAnswerText: "Apenas no canal oficial da Single da Bet dá Sorte."
       },
       {
-        question: "[Auditoria de Cashback] Durante a verificação de apostas com cashback, o analista nota que o usuário jogou 'Mines' categorizado como Slot. Como ele deve interpretar isso?",
+        question: "[Apostas & Categorias] No painel de BKO, como os jogos GOAL e MINES devem ser interpretados em relação à sua categoria?",
         options: [
-          "Tratar como fraude automática, pois Mines é proibido em bônus.",
-          "Ignorar a jogada.",
-          "Reconhecer como uma exceção do sistema, pois Mines é um jogo de crash categorizado incorretamente como slot.",
-          "Bloquear o saque e deletar a conta."
+          "São jogos do tipo Crash, mesmo que apareçam incorretamente categorizados como Slots no painel.",
+          "São Slots normais e devem seguir regra de rollover de cassino.",
+          "São jogos esportivos e entram na aba de palpites.",
+          "São jogos proibidos e geram bloqueio imediato."
         ],
-        correct: 2
+        correctAnswerText: "São jogos do tipo Crash, mesmo que apareçam incorretamente categorizados como Slots no painel."
       },
       {
-        question: "[Legitimuz / Flabet] O que fazer quando um cliente está validado na Legitimuz, mas fica preso em loop de validação na Flabet?",
+        question: "[Tempo de Propagação PIX] Quanto tempo o usuário deve aguardar após cadastrar ou atualizar uma nova chave PIX para realizar um saque?",
         options: [
-          "Pedir para o cliente refazer o Liveness.",
-          "Enviar o caso via Skype para o suporte da Flabet efetuar a liberação do lado deles (e acionar a supervisão se não houver acordo).",
-          "Cancelar a conta do usuário.",
-          "Mandar o cliente aguardar 24 horas."
+          "2 Horas, para que o provedor de pagamento atualize as informações.",
+          "10 minutos.",
+          "24 horas úteis.",
+          "Não há tempo de espera, o saque é imediato."
         ],
-        correct: 1
+        correctAnswerText: "2 Horas, para que o provedor de pagamento atualize as informações."
       },
       {
-        question: "[Jogo Responsável] Em qual ferramenta obrigatória devem ser registrados todos os bloqueios e suspensões relacionados à ludopatia?",
+        question: "[Jogo Responsável / SIGAP] Qual a conduta obrigatória quando há restrição no SIGAP ou registros de ludopatia no COMPULSAFE?",
         options: [
-          "Apenas no grupo do Discord.",
-          "No painel do gateway.",
-          "No COMPULSAFE e na planilha de acompanhamento.",
-          "Apenas no bloco de notas interno."
+          "O saldo/saque deve permanecer travado e o registro no COMPULSAFE é obrigatório.",
+          "Liberar o saque normalmente se o saldo for baixo.",
+          "Apenas enviar mensagem informando ao suporte.",
+          "Apagar os registros e reativar a conta."
         ],
-        correct: 2
+        correctAnswerText: "O saldo/saque deve permanecer travado e o registro no COMPULSAFE é obrigatório."
+      },
+      {
+        question: "[Extração de IR] Qual o procedimento correto para extrair o Relatório de Imposto de Renda de uma conta em processo de deleção?",
+        options: [
+          "Extrato > Relatório de IR > Inserir o ano fiscal > Nova Solicitação > Recarregar e baixar em Ações.",
+          "Aba Transações > Baixar PDF geral de saques.",
+          "Solicitar diretamente por e-mail à TI.",
+          "Não é possível extrair relatório de contas sob deleção."
+        ],
+        correctAnswerText: "Extrato > Relatório de IR > Inserir o ano fiscal > Nova Solicitação > Recarregar e baixar em Ações."
+      },
+      {
+        question: "[Documento Restrito / Singles] Qual o procedimento passo a passo ao identificar erro de 'Documento Restrito'?",
+        options: [
+          "Checar Receita Federal e Legitimuz; estando regular, pedir à supervisão atualização em Usuários > Consultar CPF > Atualizar dados cadastrais.",
+          "Cancelar a conta imediatamente e pedir novo cadastro.",
+          "Orientar o cliente a realizar nova verificação facial sem consultar a Receita.",
+          "Transferir o caso ao gateway de pagamento."
+        ],
+        correctAnswerText: "Checar Receita Federal e Legitimuz; estando regular, pedir à supervisão atualização em Usuários > Consultar CPF > Atualizar dados cadastrais."
+      },
+      {
+        question: "[Flabet / Legitimuz] O que deve ser feito quando o cliente está aprovado na Legitimuz, mas fica preso em loop de validação na Flabet?",
+        options: [
+          "Solicitar liberação no Skype da Flabet (ou acionar a supervisão se necessário).",
+          "Pedir para o cliente refazer a validação 5 vezes.",
+          "Bloquear a conta permanentemente.",
+          "Mandar o cliente esperar 48h sem abrir chamado."
+        ],
+        correctAnswerText: "Solicitar liberação no Skype da Flabet (ou acionar a supervisão se necessário)."
       }
     ];
 
     // 3. QUIZ STATE VARIABLES
+    let activeQuizQuestions = [];
     let currentQuestionIndex = 0;
     let selectedOptionIndex = null;
-    let score = 0;
+    let correctAnswersCount = 0;
     let userData = { name: '', role: '' };
-    let quizStartTime = null;
+    let timeRemaining = 40; // 40 Segundos
     let timerInterval = null;
 
     // TAB NAVIGATION
@@ -420,7 +450,17 @@
       }
     }
 
-    // QUIZ LOGIC
+    // HELPER: SHUFFLE ARRAYS
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    // INICIAR QUIZ (3 QUESTÕES - 40 SEGUNDOS)
     function startQuiz() {
       const name = document.getElementById('user-name').value.trim();
       const role = document.getElementById('user-role').value;
@@ -431,9 +471,25 @@
       }
 
       userData = { name, role };
+      
+      // 1. Sorteia exatamente 3 questões do banco
+      const shuffledBank = shuffleArray(masterQuestionBank);
+      const selectedQuestions = shuffledBank.slice(0, 3);
+
+      // 2. Embaralha as alternativas de cada questão
+      activeQuizQuestions = selectedQuestions.map(q => {
+        const shuffledOptions = shuffleArray(q.options);
+        const correctIndex = shuffledOptions.indexOf(q.correctAnswerText);
+        return {
+          question: q.question,
+          options: shuffledOptions,
+          correct: correctIndex
+        };
+      });
+
       currentQuestionIndex = 0;
-      score = 0;
-      quizStartTime = Date.now();
+      correctAnswersCount = 0;
+      timeRemaining = 40;
 
       document.getElementById('quiz-start-box').classList.add('hidden');
       document.getElementById('quiz-question-box').classList.remove('hidden');
@@ -445,19 +501,36 @@
 
     function startTimer() {
       clearInterval(timerInterval);
+      updateTimerDisplay();
+
       timerInterval = setInterval(() => {
-        const elapsedSeconds = Math.floor((Date.now() - quizStartTime) / 1000);
-        const mins = String(Math.floor(elapsedSeconds / 60)).padStart(2, '0');
-        const secs = String(elapsedSeconds % 60).padStart(2, '0');
-        document.getElementById('quiz-timer').innerHTML = `<i class="fa-solid fa-stopwatch mr-1"></i>${mins}:${secs}`;
+        timeRemaining--;
+        updateTimerDisplay();
+
+        if (timeRemaining <= 0) {
+          clearInterval(timerInterval);
+          finishQuiz(true); // Finaliza por tempo esgotado
+        }
       }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const secs = String(timeRemaining).padStart(2, '0');
+      const timerElement = document.getElementById('quiz-timer');
+      timerElement.innerHTML = `<i class="fa-solid fa-stopwatch mr-1"></i>00:${secs}`;
+      
+      if (timeRemaining <= 10) {
+        timerElement.className = "text-red-500 font-bold text-sm animate-pulse";
+      } else {
+        timerElement.className = "text-amber-400 font-bold text-sm";
+      }
     }
 
     function loadQuestion() {
       selectedOptionIndex = null;
-      const q = quizQuestions[currentQuestionIndex];
+      const q = activeQuizQuestions[currentQuestionIndex];
 
-      document.getElementById('question-progress').innerText = `Questão ${currentQuestionIndex + 1} de ${quizQuestions.length}`;
+      document.getElementById('question-progress').innerText = `Questão ${currentQuestionIndex + 1} de 3`;
       document.getElementById('question-title').innerText = q.question;
 
       const container = document.getElementById('options-container');
@@ -497,37 +570,46 @@
     function nextQuestion() {
       if (selectedOptionIndex === null) return;
 
-      if (selectedOptionIndex === quizQuestions[currentQuestionIndex].correct) {
-        score++;
+      if (selectedOptionIndex === activeQuizQuestions[currentQuestionIndex].correct) {
+        correctAnswersCount++;
       }
 
       currentQuestionIndex++;
 
-      if (currentQuestionIndex < quizQuestions.length) {
+      if (currentQuestionIndex < activeQuizQuestions.length) {
         loadQuestion();
       } else {
-        finishQuiz();
+        finishQuiz(false);
       }
     }
 
-    function finishQuiz() {
+    function finishQuiz(timedOut = false) {
       clearInterval(timerInterval);
-      const totalTime = Math.floor((Date.now() - quizStartTime) / 1000);
-      const mins = Math.floor(totalTime / 60);
-      const secs = totalTime % 60;
-      const formattedTime = `${mins}m ${secs}s`;
+
+      // Se estourou o tempo na questão atual e havia selecionado correto antes do tempo acabar
+      if (timedOut && selectedOptionIndex !== null) {
+        if (selectedOptionIndex === activeQuizQuestions[currentQuestionIndex].correct) {
+          correctAnswersCount++;
+        }
+      }
+
+      // 10 pontos por pergunta (máximo 30 pontos)
+      const totalScorePoints = correctAnswersCount * 10;
+      const timeSpentSecs = 40 - Math.max(0, timeRemaining);
 
       document.getElementById('quiz-question-box').classList.add('hidden');
       document.getElementById('quiz-result-box').classList.remove('hidden');
-      document.getElementById('final-score').innerText = `${score} / ${quizQuestions.length}`;
+      document.getElementById('final-score').innerText = `${totalScorePoints} / 30 pts`;
 
       // SALVAR NO FIREBASE REALTIME DATABASE
       const payload = {
         nome: userData.name,
         cargo: userData.role,
-        score: score,
-        totalQuestions: quizQuestions.length,
-        tempoFormatado: formattedTime,
+        scorePoints: totalScorePoints,
+        acertos: correctAnswersCount,
+        totalQuestions: 3,
+        tempoGasto: `${timeSpentSecs}s`,
+        tempoRestante: `${Math.max(0, timeRemaining)}s`,
         timestamp: firebase.database.ServerValue.TIMESTAMP,
         dataHora: new Date().toLocaleString('pt-BR')
       };
@@ -575,13 +657,14 @@
           const tr = document.createElement('tr');
           tr.className = "hover:bg-slate-900/50 transition border-b border-slate-800";
 
-          const notaColor = entry.score >= 4 ? 'text-emerald-400' : (entry.score >= 3 ? 'text-amber-400' : 'text-red-400');
+          const pts = entry.scorePoints !== undefined ? entry.scorePoints : (entry.score * 10 || 0);
+          const notaColor = pts >= 20 ? 'text-emerald-400' : (pts >= 10 ? 'text-amber-400' : 'text-red-400');
 
           tr.innerHTML = `
             <td class="p-4 font-semibold text-white">${entry.nome}</td>
             <td class="p-4 text-slate-400">${entry.cargo}</td>
-            <td class="p-4 font-bold ${notaColor}">${entry.score} / ${entry.totalQuestions}</td>
-            <td class="p-4 text-slate-400">${entry.tempoFormatado || '--'}</td>
+            <td class="p-4 font-bold ${notaColor}">${pts} / 30 pts (${entry.acertos || Math.floor(pts/10)}/3 de acertos)</td>
+            <td class="p-4 text-slate-400">${entry.tempoRestante || '--'} restante</td>
             <td class="p-4 text-slate-500">${entry.dataHora}</td>
           `;
           tableBody.appendChild(tr);
