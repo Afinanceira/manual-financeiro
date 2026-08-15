@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard & Quiz - Financeiro & BKO</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Firebase App & Realtime Database SDKs (v9 Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+  <style>
+    body { background-color: #0b0f19; color: #e2e8f0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .card-dark { background-color: #131b2e; border: 1px solid #1e293b; }
+    .accent-purple { color: #a855f7; }
+    .bg-accent-purple { background-color: #a855f7; }
+    .gold-glow { box-shadow: 0 0 15px rgba(234, 179, 8, 0.2); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- NAVIGATION BAR -->
+  <nav class="bg-slate-900 border-b border-slate-800 px-6 py-4 flex flex-wrap justify-between items-center shadow-lg sticky top-0 z-50">
+    <div class="flex items-center space-x-3">
+      <div class="p-2 bg-purple-600/20 text-purple-400 rounded-lg border border-purple-500/30">
+        <i class="fa-solid fa-chart-pie text-xl"></i>
+      </div>
+      <div>
+        <h1 class="font-bold text-lg text-white leading-tight">FINANCEIRO & BKO</h1>
+        <p class="text-xs text-slate-400">Plataforma de Capacitação & Operações</p>
+      </div>
+    </div>
+
+    <!-- TAB SWITCHER -->
+    <div class="flex space-x-2 mt-3 sm:mt-0">
+      <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="px-4 py-2 text-sm font-medium rounded-lg transition bg-purple-600 text-white shadow-md">
+        <i class="fa-solid fa-gauge mr-2"></i>Dashboard & Procedimentos
+      </button>
+      <button onclick="switchTab('quiz')" id="btn-tab-quiz" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-300 hover:bg-slate-800 transition">
+        <i class="fa-solid fa-graduation-cap mr-2"></i>Quiz em Tempo Real
+      </button>
+      <button onclick="switchTab('admin')" id="btn-tab-admin" class="px-4 py-2 text-sm font-medium rounded-lg text-amber-400 hover:bg-amber-400/10 transition border border-amber-500/30">
+        <i class="fa-solid fa-lock mr-2"></i>Área do Admin
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="flex-1 p-4 md:p-8 max-w-7xl w-full mx-auto">
+
+    <!-- ==================== TAB 1: DASHBOARD DE PROCEDIMENTOS ==================== -->
+    <section id="tab-dashboard" class="space-y-6">
+      
+      <!-- HEADER METRICS -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="card-dark p-5 rounded-xl border-l-4 border-l-purple-500">
+          <p class="text-xs text-slate-400 uppercase font-semibold">Regra de Transações</p>
+          <h3 class="text-xl font-bold text-white mt-1">Flabet</h3>
+          <p class="text-xs text-amber-400 mt-2"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Apenas pós 07/04/2024</p>
+        </div>
+        <div class="card-dark p-5 rounded-xl border-l-4 border-l-emerald-500">
+          <p class="text-xs text-slate-400 uppercase font-semibold">Exclusividade Singles</p>
+          <h3 class="text-xl font-bold text-white mt-1">Bet dá Sorte</h3>
+          <p class="text-xs text-emerald-400 mt-2"><i class="fa-solid fa-check-circle mr-1"></i>Apenas canal oficial da Single</p>
+        </div>
+        <div class="card-dark p-5 rounded-xl border-l-4 border-l-blue-500">
+          <p class="text-xs text-slate-400 uppercase font-semibold">Tempo de Propagação PIX</p>
+          <h3 class="text-xl font-bold text-white mt-1">2 Horas</h3>
+          <p class="text-xs text-slate-400 mt-2"><i class="fa-solid fa-clock mr-1"></i>Para atualização no provedor</p>
+        </div>
+        <div class="card-dark p-5 rounded-xl border-l-4 border-l-red-500">
+          <p class="text-xs text-slate-400 uppercase font-semibold">Jogo Responsável</p>
+          <h3 class="text-xl font-bold text-white mt-1">COMPULSAFE</h3>
+          <p class="text-xs text-red-400 mt-2"><i class="fa-solid fa-shield-halved mr-1"></i>Registro obrigatório de casos</p>
+        </div>
+      </div>
+
+      <!-- GUIA DE INTERPRETAÇÃO DO PAINEL DE BKO -->
+      <div class="card-dark p-6 rounded-xl border border-slate-800">
+        <h2 class="text-lg font-bold text-white mb-4 flex items-center">
+          <i class="fa-solid fa-display text-purple-400 mr-2"></i>Guia de Avaliação de Módulos (BKO / Sistema)
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="p-4 bg-slate-900/60 rounded-lg border border-slate-800">
+            <h4 class="font-bold text-purple-400 text-sm mb-2"><i class="fa-solid fa-user-shield mr-2"></i>Operações Permitidas & SIGAP</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Verifique se consta <strong>"Sem restrições SIGAP"</strong>. Se houver flags ativas em vermelho ou restrição por Jogo Responsável/Ludopatia no SIGAP ou <strong>COMPULSAFE</strong>, o saldo/saque deve permanecer travado.
+            </p>
+          </div>
+
+          <div class="p-4 bg-slate-900/60 rounded-lg border border-slate-800">
+            <h4 class="font-bold text-emerald-400 text-sm mb-2"><i class="fa-solid fa-wallet mr-2"></i>Carteira & Transacional</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Cruze o <strong>Saldo Total</strong> contra o volume de <strong>Total de Depósitos vs. Saques</strong>. Confira os horários dos últimos saques para evitar concorrência transacional no gateway.
+            </p>
+          </div>
+
+          <div class="p-4 bg-slate-900/60 rounded-lg border border-slate-800">
+            <h4 class="font-bold text-amber-400 text-sm mb-2"><i class="fa-solid fa-gift mr-2"></i>Carteira de Bônus & Rollover</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Monitore o <strong>Status do Bônus</strong> e a meta de <strong>Alvo de Rolagem vs. Realizado</strong>. Se houver divergência ou saque precoce, audite a conta antes de qualquer liberação.
+            </p>
+          </div>
+
+          <div class="p-4 bg-slate-900/60 rounded-lg border border-slate-800">
+            <h4 class="font-bold text-blue-400 text-sm mb-2"><i class="fa-solid fa-gamepad mr-2"></i>Apostas, GGR & Categorias</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Confira GGR e Margem. Lembre-se: ⚠️ <strong>GOAL</strong> e <strong>MINES</strong> são jogos do tipo <em>Crash</em>, mas podem aparecer incorretamente categorizados como <em>Slots</em> no painel!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROCEDIMENTOS DETALHADOS -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- BLOCO 1: IR & DELEÇÃO + CPF RESTRIÇÕES -->
+        <div class="card-dark p-6 rounded-xl space-y-4">
+          <h3 class="font-bold text-white text-base border-b border-slate-800 pb-3 flex items-center">
+            <i class="fa-solid fa-file-invoice-dollar text-emerald-400 mr-2"></i>1. Relatório de IR & Trativa de CPF Restrito
+          </h3>
+
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Extração de IR (Contas sob Deleção)</h4>
+            <ol class="text-xs text-slate-300 space-y-1.5 list-decimal list-inside bg-slate-900/40 p-3 rounded-lg border border-slate-800">
+              <li>Acesse a aba <strong>Extrato</strong> > Clique no botão <strong>Relatório de IR</strong>.</li>
+              <li>Insira o ano fiscal desejado (Exemplo: <code>2025</code>).</li>
+              <li>Clique em <strong>Nova Solicitação</strong> e aguarde a extração carregar.</li>
+              <li>Recarregue a página, vá em <strong>Ações</strong> e efetue o download.</li>
+            </ol>
+          </div>
+
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Passo a Passo: Documento Restrito (Singles)</h4>
+            <div class="space-y-2 text-xs">
+              <div class="p-2.5 bg-slate-900/60 rounded border-l-2 border-l-purple-500">
+                <strong>Passo 1:</strong> Verificar pendências fiscais do cliente na Receita Federal.
+              </div>
+              <div class="p-2.5 bg-slate-900/60 rounded border-l-2 border-l-purple-500">
+                <strong>Passo 2:</strong> Checar restrições na Legitimuz (com suporte via WhatsApp se necessário).
+              </div>
+              <div class="p-2.5 bg-slate-900/60 rounded border-l-2 border-l-purple-500">
+                <strong>Passo 3:</strong> Se regular em ambos, solicitar supervisão para atualizar: <code>Usuários > Consultar CPF > Atualizar dados cadastrais</code>.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOCO 2: CASHBACK & LUDOPATIA & FLABET -->
+        <div class="card-dark p-6 rounded-xl space-y-4">
+          <h3 class="font-bold text-white text-base border-b border-slate-800 pb-3 flex items-center">
+            <i class="fa-solid fa-microscope text-amber-400 mr-2"></i>2. Auditoria de Cashback, Flabet & Compulsafe
+          </h3>
+
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Auditoria de Cashback & Fraudes</h4>
+            <ul class="text-xs text-slate-300 space-y-1.5 list-disc list-inside bg-slate-900/40 p-3 rounded-lg border border-slate-800">
+              <li>Confira a aba <strong>Histórico de Bônus</strong> para checar concessão e uso.</li>
+              <li>Vá na seção <strong>Cassino</strong>, abra o ID da aposta e avalie a Categoria.</li>
+              <li>Atenção às exceções: <em>GOAL</em> e <em>MINES</em> são jogos de Crash.</li>
+              <li>Em caso de inconsistência: efetue o bloqueio da conta, lance na planilha e notifique o canal <code>#Bloqueio-análise</code> do Discord.</li>
+            </ul>
+          </div>
+
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Alinhamentos Operacionais</h4>
+            <div class="p-3 bg-red-950/20 border border-red-500/30 rounded-lg text-xs space-y-1">
+              <span class="font-bold text-red-400"><i class="fa-solid fa-shield mr-1"></i>COMPULSAFE & Ludopatia:</span>
+              <p class="text-slate-300">Todos os casos de Jogo Responsável devem ser cadastrados no COMPULSAFE. Se a conta ainda movimentar saldo no bloqueio centralizado, alimente a planilha obrigatoriamente.</p>
+            </div>
+            <div class="p-3 bg-amber-950/20 border border-amber-500/30 rounded-lg text-xs space-y-1">
+              <span class="font-bold text-amber-400"><i class="fa-solid fa-arrows-rotate mr-1"></i>Flabet & Legitimuz (Loop):</span>
+              <p class="text-slate-300">Não repassar a data limite de 07/04/2024 ao cliente. Em caso de loop de validação com Legitimuz ok, solicitar liberação no Skype da Flabet (ou acionar a supervisão).</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: QUIZ EM TEMPO REAL ==================== -->
+    <section id="tab-quiz" class="hidden space-y-6">
+      
+      <!-- FORM DE IDENTIFICAÇÃO (INÍCIO) -->
+      <div id="quiz-start-box" class="card-dark p-8 rounded-2xl max-w-xl mx-auto space-y-6 gold-glow border border-purple-500/30">
+        <div class="text-center space-y-2">
+          <div class="inline-block p-4 bg-purple-600/20 rounded-full text-purple-400 mb-2">
+            <i class="fa-solid fa-pen-nib text-3xl"></i>
+          </div>
+          <h2 class="text-2xl font-bold text-white">Quiz de Capacitação - BKO & Financeiro</h2>
+          <p class="text-xs text-slate-400">Suas respostas serão salvas em tempo real no banco de dados.</p>
+        </div>
+
+        <div class="space-y-4 text-left">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Nome Completo</label>
+            <input type="text" id="user-name" placeholder="Ex: Paloma Araújo" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Cargo / Equipe</label>
+            <select id="user-role" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500">
+              <option value="Analista Financeiro">Analista Financeiro</option>
+              <option value="Analista de BKO">Analista de BKO</option>
+              <option value="Supervisão">Supervisão</option>
+              <option value="Auditoria / Risco">Auditoria / Risco</option>
+            </select>
+          </div>
+          <button onclick="startQuiz()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 rounded-lg shadow-lg transition duration-200 mt-2">
+            Iniciar Quiz Agora <i class="fa-solid fa-arrow-right ml-2"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- BOX DAS QUESTÕES DO QUIZ -->
+      <div id="quiz-question-box" class="hidden card-dark p-8 rounded-2xl max-w-2xl mx-auto space-y-6">
+        
+        <!-- BARRA DE PROGRESSO & TEMPO -->
+        <div class="flex justify-between items-center text-xs font-semibold text-slate-400 border-b border-slate-800 pb-3">
+          <span id="question-progress">Questão 1 de 5</span>
+          <span id="quiz-timer" class="text-amber-400"><i class="fa-solid fa-stopwatch mr-1"></i>00:00</span>
+        </div>
+
+        <!-- PERGUNTA -->
+        <div class="space-y-2">
+          <h3 id="question-title" class="text-lg font-bold text-white leading-snug">--</h3>
+        </div>
+
+        <!-- OPÇÕES DE RESPOSTA -->
+        <div id="options-container" class="space-y-3">
+          <!-- Gerado via JS -->
+        </div>
+
+        <!-- BOTÃO PRÓXIMA -->
+        <div class="flex justify-end pt-4">
+          <button id="btn-next" onclick="nextQuestion()" disabled class="bg-purple-600 opacity-50 cursor-not-allowed hover:bg-purple-500 text-white font-bold px-6 py-2.5 rounded-lg transition">
+            Próxima Questão <i class="fa-solid fa-chevron-right ml-2"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- TELA DE RESULTADO / FINAL -->
+      <div id="quiz-result-box" class="hidden card-dark p-8 rounded-2xl max-w-md mx-auto text-center space-y-6">
+        <div class="inline-block p-4 bg-emerald-500/20 text-emerald-400 rounded-full">
+          <i class="fa-solid fa-trophy text-4xl"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-white">Quiz Finalizado!</h2>
+        <p class="text-xs text-slate-400">Seu resultado foi registrado em tempo real na base administrativa.</p>
+
+        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
+          <p class="text-xs text-slate-400">Sua Pontuação Final</p>
+          <p id="final-score" class="text-4xl font-extrabold text-purple-400">0 / 5</p>
+        </div>
+
+        <button onclick="resetQuiz()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-2.5 rounded-lg transition">
+          Refazer Quiz
+        </button>
+      </div>
+
+    </section>
+
+    <!-- ==================== TAB 3: ÁREA DO ADMIN ==================== -->
+    <section id="tab-admin" class="hidden space-y-6">
+      
+      <!-- LOGIN ADMIN -->
+      <div id="admin-login-box" class="card-dark p-8 rounded-2xl max-w-sm mx-auto space-y-4 text-center border border-amber-500/20">
+        <div class="p-3 bg-amber-500/20 text-amber-400 inline-block rounded-full mb-1">
+          <i class="fa-solid fa-lock text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-white">Autenticação do Admin</h3>
+        <p class="text-xs text-slate-400">Digite a senha restrita de supervisão para visualizar as notas em tempo real.</p>
+        <input type="password" id="admin-password" placeholder="Senha do Admin" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-amber-500">
+        <button onclick="loginAdmin()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 rounded-lg transition">
+          Acessar Painel
+        </button>
+      </div>
+
+      <!-- PAINEL REALTIME ADMIN -->
+      <div id="admin-panel" class="hidden space-y-6">
+        <div class="flex justify-between items-center bg-slate-900 p-4 rounded-xl border border-slate-800">
+          <div>
+            <h3 class="font-bold text-white text-base">Acompanhamento das Avaliações</h3>
+            <p class="text-xs text-slate-400">Atualização instantânea via Firebase Realtime Database</p>
+          </div>
+          <button onclick="logoutAdmin()" class="px-3 py-1.5 bg-red-500/20 text-red-400 hover:bg-red-500/30 rounded text-xs font-semibold">
+            Sair do Admin
+          </button>
+        </div>
+
+        <!-- TABELA DE RESULTADOS -->
+        <div class="card-dark rounded-xl overflow-hidden border border-slate-800">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-300">
+              <thead class="bg-slate-900 text-slate-400 uppercase font-semibold border-b border-slate-800">
+                <tr>
+                  <th class="p-4">Colaborador</th>
+                  <th class="p-4">Cargo/Equipe</th>
+                  <th class="p-4">Nota / Acertos</th>
+                  <th class="p-4">Tempo</th>
+                  <th class="p-4">Data/Hora</th>
+                </tr>
+              </thead>
+              <tbody id="admin-results-table" class="divide-y divide-slate-800">
+                <tr>
+                  <td colspan="5" class="p-4 text-center text-slate-500">Aguardando dados...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // 1. FIREBASE CONFIGURATION
+    const firebaseConfig = {
+      apiKey: "AIzaSyBtxvlcx4BPrTO-jBgxJFC6qsRq07zhKXg",
+      authDomain: "escala-nova-d596e.firebaseapp.com",
+      databaseURL: "https://escala-nova-d596e-default-rtdb.firebaseio.com",
+      projectId: "escala-nova-d596e",
+      storageBucket: "escala-nova-d596e.firebasestorage.app",
+      messagingSenderId: "612241634323",
+      appId: "1:612241634323:web:729a8ac37184eb92b47be6"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // 2. QUIZ DATA (5 QUESTÕES TÉCNICAS)
+    const quizQuestions = [
+      {
+        question: "[IR / Contas Excluídas] Como deve ser realizada a extração do relatório de Imposto de Renda para uma conta sob deleção?",
+        options: [
+          "Enviar um e-mail para a TI solicitando o banco de dados.",
+          "Acessar Extrato > Relatório de IR > Inserir o ano fiscal > Nova solicitação > Aguardar a extração e baixar em Ações.",
+          "Não é possível extrair o relatório de contas excluídas.",
+          "Baixar a planilha geral de saques do mês."
+        ],
+        correct: 1
+      },
+      {
+        question: "[Bet dá Sorte] Onde devem ser direcionadas as solicitações de reembolso e creditações para manter a integridade da plataforma?",
+        options: [
+          "No grupo geral do Discord.",
+          "Exclusivamente na single da Bet dá Sorte.",
+          "No Skype do suporte geral.",
+          "Diretamente com o gateway de pagamento."
+        ],
+        correct: 1
+      },
+      {
+        question: "[Auditoria de Cashback] Durante a verificação de apostas com cashback, o analista nota que o usuário jogou 'Mines' categorizado como Slot. Como ele deve interpretar isso?",
+        options: [
+          "Tratar como fraude automática, pois Mines é proibido em bônus.",
+          "Ignorar a jogada.",
+          "Reconhecer como uma exceção do sistema, pois Mines é um jogo de crash categorizado incorretamente como slot.",
+          "Bloquear o saque e deletar a conta."
+        ],
+        correct: 2
+      },
+      {
+        question: "[Legitimuz / Flabet] O que fazer quando um cliente está validado na Legitimuz, mas fica preso em loop de validação na Flabet?",
+        options: [
+          "Pedir para o cliente refazer o Liveness.",
+          "Enviar o caso via Skype para o suporte da Flabet efetuar a liberação do lado deles (e acionar a supervisão se não houver acordo).",
+          "Cancelar a conta do usuário.",
+          "Mandar o cliente aguardar 24 horas."
+        ],
+        correct: 1
+      },
+      {
+        question: "[Jogo Responsável] Em qual ferramenta obrigatória devem ser registrados todos os bloqueios e suspensões relacionados à ludopatia?",
+        options: [
+          "Apenas no grupo do Discord.",
+          "No painel do gateway.",
+          "No COMPULSAFE e na planilha de acompanhamento.",
+          "Apenas no bloco de notas interno."
+        ],
+        correct: 2
+      }
+    ];
+
+    // 3. QUIZ STATE VARIABLES
+    let currentQuestionIndex = 0;
+    let selectedOptionIndex = null;
+    let score = 0;
+    let userData = { name: '', role: '' };
+    let quizStartTime = null;
+    let timerInterval = null;
+
+    // TAB NAVIGATION
+    function switchTab(tab) {
+      document.getElementById('tab-dashboard').classList.add('hidden');
+      document.getElementById('tab-quiz').classList.add('hidden');
+      document.getElementById('tab-admin').classList.add('hidden');
+
+      document.getElementById('btn-tab-dashboard').className = "px-4 py-2 text-sm font-medium rounded-lg text-slate-300 hover:bg-slate-800 transition";
+      document.getElementById('btn-tab-quiz').className = "px-4 py-2 text-sm font-medium rounded-lg text-slate-300 hover:bg-slate-800 transition";
+      document.getElementById('btn-tab-admin').className = "px-4 py-2 text-sm font-medium rounded-lg text-amber-400 hover:bg-amber-400/10 transition border border-amber-500/30";
+
+      if (tab === 'dashboard') {
+        document.getElementById('tab-dashboard').classList.remove('hidden');
+        document.getElementById('btn-tab-dashboard').className = "px-4 py-2 text-sm font-medium rounded-lg transition bg-purple-600 text-white shadow-md";
+      } else if (tab === 'quiz') {
+        document.getElementById('tab-quiz').classList.remove('hidden');
+        document.getElementById('btn-tab-quiz').className = "px-4 py-2 text-sm font-medium rounded-lg transition bg-purple-600 text-white shadow-md";
+      } else if (tab === 'admin') {
+        document.getElementById('tab-admin').classList.remove('hidden');
+        document.getElementById('btn-tab-admin').className = "px-4 py-2 text-sm font-medium rounded-lg bg-amber-500 text-slate-950 font-bold shadow-md";
+      }
+    }
+
+    // QUIZ LOGIC
+    function startQuiz() {
+      const name = document.getElementById('user-name').value.trim();
+      const role = document.getElementById('user-role').value;
+
+      if (!name) {
+        alert("Por favor, preencha o seu nome completo antes de começar.");
+        return;
+      }
+
+      userData = { name, role };
+      currentQuestionIndex = 0;
+      score = 0;
+      quizStartTime = Date.now();
+
+      document.getElementById('quiz-start-box').classList.add('hidden');
+      document.getElementById('quiz-question-box').classList.remove('hidden');
+      document.getElementById('quiz-result-box').classList.add('hidden');
+
+      startTimer();
+      loadQuestion();
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        const elapsedSeconds = Math.floor((Date.now() - quizStartTime) / 1000);
+        const mins = String(Math.floor(elapsedSeconds / 60)).padStart(2, '0');
+        const secs = String(elapsedSeconds % 60).padStart(2, '0');
+        document.getElementById('quiz-timer').innerHTML = `<i class="fa-solid fa-stopwatch mr-1"></i>${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function loadQuestion() {
+      selectedOptionIndex = null;
+      const q = quizQuestions[currentQuestionIndex];
+
+      document.getElementById('question-progress').innerText = `Questão ${currentQuestionIndex + 1} de ${quizQuestions.length}`;
+      document.getElementById('question-title').innerText = q.question;
+
+      const container = document.getElementById('options-container');
+      container.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "w-full text-left p-3.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-xl text-xs text-slate-200 transition flex items-center space-x-3";
+        btn.onclick = () => selectOption(idx, btn);
+        btn.innerHTML = `
+          <span class="w-6 h-6 rounded-full border border-slate-600 flex items-center justify-center font-bold text-slate-400 text-xs shrink-0">${String.fromCharCode(65 + idx)}</span>
+          <span class="leading-relaxed">${opt}</span>
+        `;
+        container.appendChild(btn);
+      });
+
+      const nextBtn = document.getElementById('btn-next');
+      nextBtn.disabled = true;
+      nextBtn.className = "bg-purple-600 opacity-50 cursor-not-allowed hover:bg-purple-500 text-white font-bold px-6 py-2.5 rounded-lg transition";
+    }
+
+    function selectOption(idx, element) {
+      selectedOptionIndex = idx;
+      const buttons = document.getElementById('options-container').querySelectorAll('button');
+      
+      buttons.forEach(b => {
+        b.className = "w-full text-left p-3.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-200 transition flex items-center space-x-3";
+      });
+
+      element.className = "w-full text-left p-3.5 bg-purple-950/40 border-2 border-purple-500 rounded-xl text-xs text-white transition flex items-center space-x-3";
+
+      const nextBtn = document.getElementById('btn-next');
+      nextBtn.disabled = false;
+      nextBtn.className = "bg-purple-600 hover:bg-purple-500 text-white font-bold px-6 py-2.5 rounded-lg transition shadow-md";
+    }
+
+    function nextQuestion() {
+      if (selectedOptionIndex === null) return;
+
+      if (selectedOptionIndex === quizQuestions[currentQuestionIndex].correct) {
+        score++;
+      }
+
+      currentQuestionIndex++;
+
+      if (currentQuestionIndex < quizQuestions.length) {
+        loadQuestion();
+      } else {
+        finishQuiz();
+      }
+    }
+
+    function finishQuiz() {
+      clearInterval(timerInterval);
+      const totalTime = Math.floor((Date.now() - quizStartTime) / 1000);
+      const mins = Math.floor(totalTime / 60);
+      const secs = totalTime % 60;
+      const formattedTime = `${mins}m ${secs}s`;
+
+      document.getElementById('quiz-question-box').classList.add('hidden');
+      document.getElementById('quiz-result-box').classList.remove('hidden');
+      document.getElementById('final-score').innerText = `${score} / ${quizQuestions.length}`;
+
+      // SALVAR NO FIREBASE REALTIME DATABASE
+      const payload = {
+        nome: userData.name,
+        cargo: userData.role,
+        score: score,
+        totalQuestions: quizQuestions.length,
+        tempoFormatado: formattedTime,
+        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        dataHora: new Date().toLocaleString('pt-BR')
+      };
+
+      db.ref('resultados_quiz_financeiro').push(payload);
+    }
+
+    function resetQuiz() {
+      document.getElementById('quiz-result-box').classList.add('hidden');
+      document.getElementById('quiz-start-box').classList.remove('hidden');
+    }
+
+    // 4. ADMIN PANEL & REALTIME DATABASE LISTENER
+    function loginAdmin() {
+      const pass = document.getElementById('admin-password').value;
+      if (pass === "admin123") {
+        document.getElementById('admin-login-box').classList.add('hidden');
+        document.getElementById('admin-panel').classList.remove('hidden');
+        listenAdminRealtimeData();
+      } else {
+        alert("Senha de administrador incorreta.");
+      }
+    }
+
+    function logoutAdmin() {
+      document.getElementById('admin-panel').classList.add('hidden');
+      document.getElementById('admin-login-box').classList.remove('hidden');
+      document.getElementById('admin-password').value = '';
+    }
+
+    function listenAdminRealtimeData() {
+      db.ref('resultados_quiz_financeiro').on('value', (snapshot) => {
+        const tableBody = document.getElementById('admin-results-table');
+        tableBody.innerHTML = '';
+
+        if (!snapshot.exists()) {
+          tableBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">Nenhum resultado registrado até o momento.</td></tr>`;
+          return;
+        }
+
+        const data = snapshot.val();
+        const entries = Object.values(data).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+        entries.forEach(entry => {
+          const tr = document.createElement('tr');
+          tr.className = "hover:bg-slate-900/50 transition border-b border-slate-800";
+
+          const notaColor = entry.score >= 4 ? 'text-emerald-400' : (entry.score >= 3 ? 'text-amber-400' : 'text-red-400');
+
+          tr.innerHTML = `
+            <td class="p-4 font-semibold text-white">${entry.nome}</td>
+            <td class="p-4 text-slate-400">${entry.cargo}</td>
+            <td class="p-4 font-bold ${notaColor}">${entry.score} / ${entry.totalQuestions}</td>
+            <td class="p-4 text-slate-400">${entry.tempoFormatado || '--'}</td>
+            <td class="p-4 text-slate-500">${entry.dataHora}</td>
+          `;
+          tableBody.appendChild(tr);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
