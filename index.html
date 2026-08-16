@@ -41,6 +41,12 @@
       <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="px-3 py-2 text-xs font-medium rounded-lg transition bg-purple-600 text-white shadow-md">
         <i class="fa-solid fa-gauge mr-1.5"></i>Dashboard
       </button>
+      <button onclick="switchTab('analise-apostas')" id="btn-tab-analise-apostas" class="px-3 py-2 text-xs font-medium rounded-lg text-emerald-400 hover:bg-emerald-950/40 transition border border-emerald-500/30">
+        <i class="fa-solid fa-magnifying-glass-chart mr-1.5"></i>Análise de Apostas
+      </button>
+      <button onclick="switchTab('procedimentos')" id="btn-tab-procedimentos" class="px-3 py-2 text-xs font-medium rounded-lg text-indigo-400 hover:bg-indigo-950/40 transition border border-indigo-500/30">
+        <i class="fa-solid fa-icons mr-1.5"></i>Procedimentos & Emojis
+      </button>
       <button onclick="switchTab('jogo-responsavel')" id="btn-tab-jogo-responsavel" class="px-3 py-2 text-xs font-medium rounded-lg text-red-400 hover:bg-red-950/40 transition border border-red-500/30">
         <i class="fa-solid fa-shield-halved mr-1.5"></i>Jogo Responsável & COMPULSAFE
       </button>
@@ -166,7 +172,7 @@
               ⏱️ <strong>Prazo Máximo de Retenção:</strong> O prazo máximo para um saque permanecer em processamento é de <strong>1 hora</strong>.
             </p>
             <p class="text-slate-300">
-              Por isso, é essencial que esse acompanhamento seja feito ao longo de todo o expediente, incluindo rigorosamente na <strong>chegada ao turno</strong> e <strong>antes da saída</strong>.
+              Por isso, é essencial que esse acompanhamento seja feito ao longo de todo el expediente, incluindo rigorosamente na <strong>chegada ao turno</strong> e <strong>antes da saída</strong>.
             </p>
           </div>
 
@@ -202,7 +208,210 @@
       </div>
     </section>
 
-    <!-- ==================== TAB 2: JOGO RESPONSÁVEL & COMPULSAFE ==================== -->
+    <!-- ==================== TAB 2: ANÁLISE DE APOSTAS ==================== -->
+    <section id="tab-analise-apostas" class="space-y-6 hidden">
+      <div class="card-dark p-6 rounded-xl border border-emerald-500/30 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+          <div class="flex items-center space-x-3">
+            <div class="p-3 bg-emerald-600/20 text-emerald-400 rounded-xl border border-emerald-500/30">
+              <i class="fa-solid fa-magnifying-glass-chart text-2xl"></i>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-white">Manual Operacional: Análise de Apostas e Cashback</h2>
+              <p class="text-xs text-slate-400">Procedimento padrão para verificação de bônus, detecção de fraudes em crash/slots e liberação de saques</p>
+            </div>
+          </div>
+          <span class="text-xs bg-emerald-950 text-emerald-300 px-3 py-1 rounded-full border border-emerald-500/30 font-mono font-bold">Filtro Antifraude</span>
+        </div>
+
+        <!-- PASSO 1 -->
+        <div class="p-5 bg-slate-900/90 rounded-xl border border-slate-800 space-y-3">
+          <h3 class="font-bold text-emerald-400 text-sm flex items-center">
+            <i class="fa-solid fa-1 mr-2 bg-emerald-500 text-slate-950 w-6 h-6 rounded-full inline-flex items-center justify-center text-xs"></i>
+            Primeiro: Verificação do Histórico de Bônus
+          </h3>
+          <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside leading-relaxed">
+            <li>Acesse a aba <strong>"Histórico de Bônus"</strong> do usuário na plataforma.</li>
+            <li>Verifique se o bônus de <strong>"Cashback"</strong> está ativo com possibilidade para resgate.</li>
+            <li>Observe o valor do bônus concedido e utilizado.</li>
+            <li>Certifique-se de que o usuário utilizou o cashback corretamente. É importante verificar se o uso não indica fraude, pois nem todo usuário que utilizou o cashback está cometendo fraude. Portanto, acompanhe com cautela todas as movimentações.</li>
+          </ul>
+        </div>
+
+        <!-- PASSO 2 -->
+        <div class="p-5 bg-slate-900/90 rounded-xl border border-slate-800 space-y-3">
+          <h3 class="font-bold text-emerald-400 text-sm flex items-center">
+            <i class="fa-solid fa-2 mr-2 bg-emerald-500 text-slate-950 w-6 h-6 rounded-full inline-flex items-center justify-center text-xs"></i>
+            Segundo: Verificação do Uso em Jogos de Slots
+          </h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Se o cashback foi identificado, vá para a seção de movimentações e verifique se o saldo foi usado em jogos de slots.
+          </p>
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 space-y-1">
+            <p class="text-xs font-semibold text-white">Para confirmar se um jogo é de slot:</p>
+            <ol class="text-xs text-slate-300 list-decimal list-inside space-y-1 pl-1">
+              <li>Acesse a aba <strong>"Cassino"</strong>.</li>
+              <li>Clique no <strong>ID da aposta</strong> feita pelo usuário.</li>
+              <li>Na página que abrir, verifique o campo <strong>"Categoria"</strong>, que mostrará o tipo de jogo.</li>
+            </ol>
+          </div>
+          <div class="p-3 bg-amber-950/40 rounded-lg border border-amber-500/40 text-xs text-amber-200 flex items-start space-x-2">
+            <i class="fa-solid fa-triangle-exclamation text-amber-400 mt-0.5 shrink-0"></i>
+            <div>
+              <strong class="text-amber-300 font-bold">Exceções Importantes:</strong>
+              <p class="mt-0.5">Jogos como <strong>GOAL</strong> e <strong>Mines</strong> são classificados como jogos de crash, mas estão erroneamente categorizados como slots. Atenção redobrada a isso durante a verificação!</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PASSO 3 -->
+        <div class="p-5 bg-slate-900/90 rounded-xl border border-slate-800 space-y-3">
+          <h3 class="font-bold text-emerald-400 text-sm flex items-center">
+            <i class="fa-solid fa-3 mr-2 bg-emerald-500 text-slate-950 w-6 h-6 rounded-full inline-flex items-center justify-center text-xs"></i>
+            Terceiro: Ação Após Verificação
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div class="p-4 bg-emerald-950/20 border border-emerald-500/30 rounded-lg space-y-2">
+              <span class="font-bold text-emerald-400 uppercase"><i class="fa-solid fa-check-circle mr-1.5"></i>Fluxo Correto</span>
+              <p class="text-slate-300">Se o uso do cashback e as jogadas do usuário estiverem corretos:</p>
+              <p class="font-semibold text-emerald-300">👉 Proceda com a liberação do pagamento do saque.</p>
+            </div>
+
+            <div class="p-4 bg-red-950/20 border border-red-500/30 rounded-lg space-y-2">
+              <span class="font-bold text-red-400 uppercase"><i class="fa-solid fa-ban mr-1.5"></i>Irregularidade / Fraude</span>
+              <p class="text-slate-300">Caso seja identificada alguma irregularidade ou potencial fraude:</p>
+              <ul class="text-slate-300 list-disc list-inside space-y-1">
+                <li>Realize o bloqueio da conta;</li>
+                <li>Registre a ação na planilha de saques;</li>
+                <li>Insira o caso no grupo <strong>#Bloqueio-análise</strong> no Discord para que a equipe possa revisar.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- PADRÃO DE FRAUDE IDENTIFICADA -->
+        <div class="p-5 bg-red-950/30 rounded-xl border-2 border-red-500/50 space-y-3">
+          <h3 class="font-bold text-red-300 text-sm flex items-center">
+            <i class="fa-solid fa-triangle-exclamation text-red-400 mr-2"></i>Padrão de Identificação de Fraude
+          </h3>
+          <p class="text-xs text-slate-200 leading-relaxed">
+            Basicamente os usuários prendem o saldo num jogo especifico (<strong>Mines</strong> e <strong>Goal</strong> são os principais) para tentar receber o valor do bônus como saldo real sem cumprir o rollover. É possível perceber que eles apostam o valor do saldo real total e logo em seguida ganham o mesmo valor exatamente, burlando a dinâmica esperada da bonificação.
+          </p>
+        </div>
+
+        <p class="text-xs text-slate-400 italic text-center">
+          Esse procedimento garante que todas as etapas sejam analisadas corretamente e que apenas os casos que realmente necessitam de revisão sejam encaminhados para o bloqueio.
+        </p>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: PROCEDIMENTOS & EMOJIS ==================== -->
+    <section id="tab-procedimentos" class="space-y-6 hidden">
+      <div class="card-dark p-6 rounded-xl border border-indigo-500/30 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+          <div class="flex items-center space-x-3">
+            <div class="p-3 bg-indigo-600/20 text-indigo-400 rounded-xl border border-indigo-500/30">
+              <i class="fa-solid fa-icons text-2xl"></i>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-white">Padronização dos Emojis de Reações em Tratativas</h2>
+              <p class="text-xs text-slate-400">Guia oficial para manter a organização e facilitar o acompanhamento das demandas da equipe</p>
+            </div>
+          </div>
+          <span class="text-xs bg-indigo-950 text-indigo-300 px-3 py-1 rounded-full border border-indigo-500/30 font-mono font-bold">Guia de Reações</span>
+        </div>
+
+        <p class="text-xs text-slate-300 leading-relaxed bg-slate-900/60 p-4 rounded-lg border border-slate-800">
+          Pessoal, para mantermos a organização e facilitar o acompanhamento das demandas, vamos padronizar o uso de emojis nas reações das tratativas. Segue abaixo a orientação de quando utilizar cada um:
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          <!-- CHECK -->
+          <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+            <div class="flex items-center space-x-2">
+              <span class="text-xl">✅</span>
+              <h4 class="font-bold text-emerald-400 text-sm">Check (Sucesso)</h4>
+            </div>
+            <p class="text-xs text-slate-300">Usado para sinalizar tratativas finalizadas com sucesso. Exemplos:</p>
+            <ul class="text-[11px] text-slate-400 list-disc list-inside space-y-1 pl-1">
+              <li>Depósito confirmado e e-mail enviado</li>
+              <li>Alteração cadastral concluída</li>
+              <li>Tratativa encerrada com resolução positiva</li>
+            </ul>
+          </div>
+
+          <!-- NEGATIVA -->
+          <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+            <div class="flex items-center space-x-2">
+              <span class="text-xl">❌</span>
+              <h4 class="font-bold text-red-400 text-sm">Resolução Negativa</h4>
+            </div>
+            <p class="text-xs text-slate-300">Utilizar este emoji quando a resposta final não for positiva, como:</p>
+            <ul class="text-[11px] text-slate-400 list-disc list-inside space-y-1 pl-1">
+              <li>Saque cancelado e valor estornado</li>
+              <li>Comprovante negado devido creditação em data anterior sem outra ordem na mesma data e valor</li>
+            </ul>
+          </div>
+
+          <!-- AGUARDANDO -->
+          <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+            <div class="flex items-center space-x-2">
+              <span class="text-xl">⏳</span>
+              <h4 class="font-bold text-amber-400 text-sm">Aguardando Informações</h4>
+            </div>
+            <p class="text-xs text-slate-300">Quando a tratativa estiver pendente por análise ou envio de dados:</p>
+            <p class="text-[11px] text-slate-400 italic">Ex: aguardando fotos, comprovantes, validações internas.</p>
+          </div>
+
+          <!-- CONTA BLOQUEADA -->
+          <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+            <div class="flex items-center space-x-2">
+              <span class="text-xl">🔒</span>
+              <h4 class="font-bold text-red-300 text-sm">Conta Bloqueada</h4>
+            </div>
+            <p class="text-xs text-slate-300">Usar o emoji de cadeado fechado para sinalizar quando a conta está bloqueada.</p>
+          </div>
+
+          <!-- CONTA DESBLOQUEADA -->
+          <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+            <div class="flex items-center space-x-2">
+              <span class="text-xl">🔓</span>
+              <h4 class="font-bold text-emerald-300 text-sm">Conta Desbloqueada</h4>
+            </div>
+            <p class="text-xs text-slate-300">Usar o emoji de cadeado aberto para contas desbloqueadas.</p>
+          </div>
+
+          <!-- INFORMAÇÃO INTERNA -->
+          <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+            <div class="flex items-center space-x-2">
+              <span class="text-xl">ℹ️</span>
+              <h4 class="font-bold text-cyan-400 text-sm">Informação Interna</h4>
+            </div>
+            <p class="text-xs text-slate-300">Para comunicações ou observações internas, que não exigem tratativa com cliente.</p>
+          </div>
+
+        </div>
+
+        <!-- ERRO OPERACIONAL -->
+        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+          <div class="flex items-center space-x-2">
+            <span class="text-xl">⚠️</span>
+            <h4 class="font-bold text-amber-300 text-sm">Erro Operacional</h4>
+          </div>
+          <p class="text-xs text-slate-300">Para casos com problemas como:</p>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-[11px] text-slate-400 pt-1">
+            <div class="p-2 bg-slate-950 rounded border border-slate-800">• Grupo incorreto</div>
+            <div class="p-2 bg-slate-950 rounded border border-slate-800">• Falta/duplicação de dados</div>
+            <div class="p-2 bg-slate-950 rounded border border-slate-800">• Fotos ilegíveis</div>
+            <div class="p-2 bg-slate-950 rounded border border-slate-800">• Tratativa repetida / Erro de servidor</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: JOGO RESPONSÁVEL & COMPULSAFE ==================== -->
     <section id="tab-jogo-responsavel" class="space-y-6 hidden">
       <div class="card-dark p-6 rounded-xl border border-red-500/30">
         <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
@@ -361,7 +570,7 @@
       </div>
     </section>
 
-    <!-- ==================== TAB 3: REGULAMENTAÇÕES, SIGAP & BCB 766/2026 ==================== -->
+    <!-- ==================== TAB 5: REGULAMENTAÇÕES, SIGAP & BCB 766/2026 ==================== -->
     <section id="tab-portaria" class="space-y-6 hidden">
 
       <!-- REFORÇO DE AVISO: SAQUES EM PROCESSAMENTO -->
@@ -502,7 +711,7 @@
 
     </section>
 
-    <!-- ==================== TAB 4: QUIZ & PAINEL DE DESEMPENHO ==================== -->
+    <!-- ==================== TAB 6: QUIZ & PAINEL DE DESEMPENHO ==================== -->
     <section id="tab-quiz" class="hidden space-y-8">
       <div id="quiz-start-box" class="card-dark p-8 rounded-2xl max-w-xl mx-auto space-y-6 gold-glow border border-purple-500/30">
         <div class="text-center space-y-2">
@@ -587,7 +796,7 @@
       </div>
     </section>
 
-    <!-- ==================== TAB 5: MURAL DE AVISOS ==================== -->
+    <!-- ==================== TAB 7: MURAL DE AVISOS ==================== -->
     <section id="tab-avisos" class="space-y-6 hidden">
       <div id="notice-board-container" class="card-dark p-6 rounded-xl border border-cyan-500/30 purple-glow transition-all duration-300">
         <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
@@ -614,7 +823,7 @@
       </div>
     </section>
 
-    <!-- ==================== TAB 6: ÁREA DO ADMIN ==================== -->
+    <!-- ==================== TAB 8: ÁREA DO ADMIN ==================== -->
     <section id="tab-admin" class="hidden space-y-6">
       <div id="admin-login-box" class="card-dark p-8 rounded-2xl max-w-sm mx-auto space-y-4 text-center border border-amber-500/20">
         <div class="p-3 bg-amber-500/20 text-amber-400 inline-block rounded-full mb-1">
@@ -714,8 +923,48 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // BANCO EXPANDIDO DE QUESTÕES DO QUIZ
+    // BANCO EXPANDIDO DE QUESTÕES DO QUIZ (INCLUINDO PROCEDIMENTOS E EMOJIS)
     const masterQuestionBank = [
+      {
+        question: "[Procedimentos & Emojis] Qual emoji deve ser utilizado para sinalizar tratativas finalizadas com sucesso (ex: depósito confirmado e e-mail enviado)?",
+        options: [
+          "✅ (Check)",
+          "❌ (Negativa)",
+          "⏳ (Aguardando)",
+          "🔒 (Bloqueado)"
+        ],
+        correctAnswerText: "✅ (Check)"
+      },
+      {
+        question: "[Procedimentos & Emojis] Qual emoji deve ser utilizado para casos de erro operacional, como grupo incorreto ou fotos ilegíveis?",
+        options: [
+          "⚠️ (Erro operacional / Alerta)",
+          "🔓 (Desbloqueado)",
+          "ℹ️ (Informação interna)",
+          "✅ (Check)"
+        ],
+        correctAnswerText: "⚠️ (Erro operacional / Alerta)"
+      },
+      {
+        question: "[Análise de Apostas] Ao verificar o uso de cashback em jogos de slots, quais jogos muito populares estão erroneamente categorizados como slots mas são de crash?",
+        options: [
+          "GOAL e Mines",
+          "Aviator e Spaceman",
+          "Fortune Tiger e Fortune Ox",
+          "Roulette e Blackjack"
+        ],
+        correctAnswerText: "GOAL e Mines"
+      },
+      {
+        question: "[Análise de Apostas] O que deve ser feito caso seja identificada uma irregularidade ou potencial fraude no uso do cashback?",
+        options: [
+          "Realizar o bloqueio da conta, registrar na planilha de saques e inserir o caso no grupo #Bloqueio-análise no Discord.",
+          "Apenas liberar o saque imediatamente.",
+          "Enviar uma mensagem de parabéns ao usuário.",
+          "Aguardar 7 dias úteis sem nenhuma ação."
+        ],
+        correctAnswerText: "Realizar o bloqueio da conta, registrar na planilha de saques e inserir o caso no grupo #Bloqueio-análise no Discord."
+      },
       {
         question: "[Edição de Limites] Qual é a nova regra de quarentena para alteração de limites (diário, semanal e mensal) definida pelo jogador?",
         options: [
@@ -727,16 +976,6 @@
         correctAnswerText: "Quarentena única de 1 dia (24 horas) para todos os limites."
       },
       {
-        question: "[Aviso de Saques] Qual o prazo máximo permitido para um saque permanecer em processamento antes de ser encaminhado para atualização?",
-        options: [
-          "O prazo máximo é de 1 hora.",
-          "O prazo máximo é de 24 horas.",
-          "O prazo máximo é de 3 horas úteis.",
-          "Não há prazo estipulado."
-        ],
-        correctAnswerText: "O prazo máximo é de 1 hora."
-      },
-      {
         question: "[Compulsafe / Registros] O que deve ser obrigatoriamente registrado na plataforma COMPULSAFE?",
         options: [
           "Todos os bloqueios e suspensão, tudo relacionado a jogo responsável, principalmente ludopatia.",
@@ -745,36 +984,6 @@
           "Somente cadastros efetuados via suporte do Telegram."
         ],
         correctAnswerText: "Todos os bloqueios e suspensão, tudo relacionado a jogo responsável, principalmente ludopatia."
-      },
-      {
-        question: "[Compulsafe / Anexos] Como proceder no Compulsafe quando o usuário possui mais de um contato/conversa referente ao bloqueio por Ludopatia?",
-        options: [
-          "Baixar todas as conversas do Blip, colocar em uma pasta e subir um único arquivo .ZIP no Compulsafe.",
-          "Anexar apenas o primeiro atendimento e ignorar os demais.",
-          "Enviar os arquivos por e-mail para a equipe de TI.",
-          "Não é necessário anexar conversas no Compulsafe."
-        ],
-        correctAnswerText: "Baixar todas as conversas do Blip, colocar em uma pasta e subir um único arquivo .ZIP no Compulsafe."
-      },
-      {
-        question: "[Compulsafe / Confirmação] Qual o procedimento visual no Discord após concluir totalmente a tratativa e o cadastro do usuário no Compulsafe?",
-        options: [
-          "Utilizar o emoji 📌 na publicação do caso no Discord.",
-          "Apagar a mensagem do canal do Discord.",
-          "Enviar mensagem no privado do Gerente.",
-          "Marcar a tag @Todos no canal geral."
-        ],
-        correctAnswerText: "Utilizar o emoji 📌 na publicação do caso no Discord."
-      },
-      {
-        question: "[Restrições SIGAP] No card Restrições SIGAP do jogador, o que significa quando o campo Operações aparece 'Desbloqueado'?",
-        options: [
-          "Trata-se de restrição de Bolsa Família/BPC, que por decisão do STF não impede o cliente de operar normalmente.",
-          "O cliente está liberado por decisão da supervisão interna.",
-          "Indica que a conta não possui nenhum vínculo com o SIGAP.",
-          "O cliente precisa alterar a senha antes de poder apostar."
-        ],
-        correctAnswerText: "Trata-se de restrição de Bolsa Família/BPC, que por decisão do STF não impede o cliente de operar normalmente."
       }
     ];
 
@@ -794,6 +1003,8 @@
 
     function switchTab(tab) {
       document.getElementById('tab-dashboard').classList.add('hidden');
+      document.getElementById('tab-analise-apostas').classList.add('hidden');
+      document.getElementById('tab-procedimentos').classList.add('hidden');
       document.getElementById('tab-jogo-responsavel').classList.add('hidden');
       document.getElementById('tab-portaria').classList.add('hidden');
       document.getElementById('tab-quiz').classList.add('hidden');
@@ -801,6 +1012,8 @@
       document.getElementById('tab-admin').classList.add('hidden');
 
       document.getElementById('btn-tab-dashboard').className = "px-3 py-2 text-xs font-medium rounded-lg text-slate-300 hover:bg-slate-800 transition";
+      document.getElementById('btn-tab-analise-apostas').className = "px-3 py-2 text-xs font-medium rounded-lg text-emerald-400 hover:bg-emerald-950/40 transition border border-emerald-500/30";
+      document.getElementById('btn-tab-procedimentos').className = "px-3 py-2 text-xs font-medium rounded-lg text-indigo-400 hover:bg-indigo-950/40 transition border border-indigo-500/30";
       document.getElementById('btn-tab-jogo-responsavel').className = "px-3 py-2 text-xs font-medium rounded-lg text-red-400 hover:bg-red-950/40 transition border border-red-500/30";
       document.getElementById('btn-tab-portaria').className = "px-3 py-2 text-xs font-medium rounded-lg text-amber-400 hover:bg-amber-950/40 transition border border-amber-500/30";
       document.getElementById('btn-tab-quiz').className = "px-3 py-2 text-xs font-medium rounded-lg text-slate-300 hover:bg-slate-800 transition";
@@ -810,6 +1023,12 @@
       if (tab === 'dashboard') {
         document.getElementById('tab-dashboard').classList.remove('hidden');
         document.getElementById('btn-tab-dashboard').className = "px-3 py-2 text-xs font-medium rounded-lg transition bg-purple-600 text-white shadow-md";
+      } else if (tab === 'analise-apostas') {
+        document.getElementById('tab-analise-apostas').classList.remove('hidden');
+        document.getElementById('btn-tab-analise-apostas').className = "px-3 py-2 text-xs font-medium rounded-lg transition bg-emerald-600 text-white shadow-md";
+      } else if (tab === 'procedimentos') {
+        document.getElementById('tab-procedimentos').classList.remove('hidden');
+        document.getElementById('btn-tab-procedimentos').className = "px-3 py-2 text-xs font-medium rounded-lg transition bg-indigo-600 text-white shadow-md";
       } else if (tab === 'jogo-responsavel') {
         document.getElementById('tab-jogo-responsavel').classList.remove('hidden');
         document.getElementById('btn-tab-jogo-responsavel').className = "px-3 py-2 text-xs font-medium rounded-lg transition bg-red-600 text-white shadow-md";
