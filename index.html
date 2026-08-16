@@ -783,7 +783,7 @@
     let selectedOptionIndex = null;
     let correctAnswersCount = 0;
     let userName = '';
-    let timeRemaining = 30; // 30 SEGUNDOS
+    let timeRemaining = 30;
     let timerInterval = null;
     let isMonitorBoardMode = false;
 
@@ -837,12 +837,12 @@
       return arr;
     }
 
-    // SANITIZAR NOME PARA CHAVE DO FIREBASE
+    // SANITIZAR NOME PARA CHAVE ÚNICA DO FIREBASE
     function sanitizarChaveFirebase(nome) {
       return nome.toLowerCase().trim().replace(/[.#$\/\[\]]/g, "_");
     }
 
-    // INICIAR QUIZ COM VERIFICAÇÃO DIRETA NO FIREBASE PELA DATA ATUAL
+    // INICIAR QUIZ COM VALIDAÇÃO DE DATA ATUAL
     function startQuiz() {
       const name = document.getElementById('user-name').value.trim();
       if (!name) { alert("Por favor, preencha o seu nome completo antes de começar."); return; }
@@ -853,7 +853,6 @@
       db.ref(`resultados_quiz_financeiro/${sanitizedKey}`).once('value', (snapshot) => {
         if (snapshot.exists()) {
           const dados = snapshot.val();
-          // Verifica se a data da última resposta contém a data de hoje
           if (dados.dataHora && dados.dataHora.startsWith(todayStr)) {
             alert(`Atenção, ${name}! Você já realizou o quiz de hoje (${todayStr}).`);
             return;
@@ -882,7 +881,6 @@
       });
     }
 
-    // GERADOR DE PERGUNTA ÚNICA E VARIADA POR COLABORADOR E DIA
     function getQuestionForUserToday(name, bank) {
       const today = new Date().toISOString().split('T')[0];
       const seedStr = `${name.toLowerCase().trim()}_${today}`;
@@ -944,14 +942,14 @@
       finishQuiz(false);
     }
 
-    // ATUALIZAÇÃO ACUMULATIVA NO FIREBASE USANDO A CHAVE DO NOME
+    // ATUALIZAÇÃO ACUMULATIVA E ÚNICA POR ANALISTA NO FIREBASE
     function finishQuiz(timedOut = false) {
       clearInterval(timerInterval);
       if (timedOut && selectedOptionIndex !== null && selectedOptionIndex === activeQuizQuestions[currentQuestionIndex].correct) correctAnswersCount++;
 
       const novosPontos = correctAnswersCount * 10;
       const sanitisedKey = sanitizarChaveFirebase(userName);
-      const userRef = db.ref(`resultados_quiz_financeiro/${sanitisedKey}`);
+      const userRef = db.ref(`resultados_quiz_financeiro/${sanitizedKey}`);
 
       userRef.once('value', (snapshot) => {
         let pontosTotais = novosPontos;
@@ -963,7 +961,7 @@
 
         document.getElementById('quiz-question-box').classList.add('hidden');
         document.getElementById('quiz-result-box').classList.remove('hidden');
-        document.getElementById('final-score').innerText = `${pontosTotais} pts (Total)`;
+        document.getElementById('final-score').innerText = `${pontosTotais} pts (Total Acumulado)`;
 
         const payload = {
           nome: userName, 
@@ -981,16 +979,50 @@
       });
     }
 
-    // ORDENAÇÃO: 1º PONTUAÇÃO (PONTOS) | 2º MAIOR TEMPO RESTANTE (SEGUNDOS)
+    // ORDENAÇÃO E EXIBIÇÃO ÚNICA NA TABELA SEM DUPLICAÇÃO DE NOMES
     function listenPublicRankingData() {
       db.ref('resultados_quiz_financeiro').on('value', (snapshot) => {
         const tableBody = document.getElementById('public-ranking-table'); tableBody.innerHTML = '';
         if (!snapshot.exists()) { tableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">Nenhum resultado registrado ainda.</td></tr>`; return; }
 
-        const entries = Object.values(snapshot.val()).sort((a, b) => b.scorePoints !== a.scorePoints ? b.scorePoints - a.scorePoints : (b.tempoRestanteSegundos || 0) - (a.tempoRestanteSegundos || 0));
+        const rawData = snapshot.val();
+        
+        // Se houver dados antigos no formato push (sem chave sanitizada de nome), limpa automaticamente para evitar duplicatas antigas
+        let entries = [];
+        let needsCleanup = false;
+
+        Object.keys(rawData).forEach(key => {
+          const item = rawData[key];
+          if (item && item.nome) {
+            // Se a chave no banco for diferente da chave sanitizada do nome, indica dado antigo empurrado por .push()
+            const expectedKey = sanitizarChaveFirebase(item.nome);
+            if (key !== expectedKey) {
+              needsCleanup = true;
+            }
+            entries.push(item);
+          }
+        });
+
+        // Limpeza automática de IDs antigos baseados em .push() para manter apenas os registros consolidados
+        if (needsCleanup) {
+          let consolidated = {};
+          entries.forEach(item => {
+            const k = sanitizarChaveFirebase(item.nome);
+            // Mantém sempre o com maior pontuação ou data mais recente se houver conflito
+            if (!consolidated[k] || (item.scorePoints >= consolidated[k].scorePoints)) {
+              consolidated[k] = item;
+            }
+          });
+          db.ref('resultados_quiz_financeiro').set(consolidated);
+          return;
+        }
+
+        // Ordena por pontuação (maior primeiro) e maior tempo restante
+        entries.sort((a, b) => b.scorePoints !== a.scorePoints ? b.scorePoints - a.scorePoints : (b.tempoRestanteSegundos || 0) - (a.tempoRestanteSegundos || 0));
+
         entries.forEach((entry) => {
           const tr = document.createElement('tr'); tr.className = "hover:bg-slate-900/50 transition border-b border-slate-800";
-          const pts = entry.scorePoints || 0; const notaColor = pts >= 10 ? 'text-emerald-400' : 'text-red-400';
+          const pts = entry.scorePoints || 0; const notaColor = pts > 0 ? 'text-emerald-400' : 'text-red-400';
           tr.innerHTML = `<td class="p-4 font-semibold text-white">${entry.nome}</td><td class="p-4 font-bold ${notaColor}">${pts} pts</td><td class="p-4 font-mono text-amber-300 font-bold">${entry.tempoRestante || '0s'}</td><td class="p-4 text-slate-500">${entry.dataHora}</td>`;
           tableBody.appendChild(tr);
         });
@@ -1089,8 +1121,8 @@
         const entries = Object.values(snapshot.val()).sort((a, b) => b.scorePoints !== a.scorePoints ? b.scorePoints - a.scorePoints : (b.tempoRestanteSegundos || 0) - (a.tempoRestanteSegundos || 0));
         entries.forEach(entry => {
           const tr = document.createElement('tr'); tr.className = "hover:bg-slate-900/50 transition border-b border-slate-800";
-          const pts = entry.scorePoints || 0; const notaColor = pts >= 10 ? 'text-emerald-400' : 'text-red-400';
-          tr.innerHTML = `<td class="p-4 font-semibold text-white">${entry.nome}</td><td class="p-4 font-bold ${notaColor}">${pts} / 10 pts</td><td class="p-4 font-mono text-amber-300 font-bold">${entry.tempoRestante || '0s'}</td><td class="p-4 text-slate-500">${entry.dataHora}</td>`;
+          const pts = entry.scorePoints || 0; const notaColor = pts > 0 ? 'text-emerald-400' : 'text-red-400';
+          tr.innerHTML = `<td class="p-4 font-semibold text-white">${entry.nome}</td><td class="p-4 font-bold ${notaColor}">${pts} pts</td><td class="p-4 font-mono text-amber-300 font-bold">${entry.tempoRestante || '0s'}</td><td class="p-4 text-slate-500">${entry.dataHora}</td>`;
           tableBody.appendChild(tr);
         });
       });
