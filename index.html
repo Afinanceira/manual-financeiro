@@ -837,7 +837,7 @@
       return arr;
     }
 
-    // TRAVA DE 1 QUIZ POR DIA POR NOME (MANTIDA)
+    // AJUSTADO: TRAVA DE 1 QUIZ POR DIA BASEADA NA DATA ATUAL DO SISTEMA
     function hasTakenQuizToday(name) {
       const today = new Date().toISOString().split('T')[0];
       const key = `quiz_done_${name.toLowerCase().trim()}_${today}`;
