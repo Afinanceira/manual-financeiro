@@ -842,7 +842,7 @@
       return nome.toLowerCase().trim().replace(/[.#$\/\[\]]/g, "_");
     }
 
-    // INICIAR QUIZ COM VALIDAÇÃO DE DATA ATUAL
+    // INICIAR QUIZ COM SORTEIO ALEATÓRIO EXCLUSIVO POR ANALISTA E DIA
     function startQuiz() {
       const name = document.getElementById('user-name').value.trim();
       if (!name) { alert("Por favor, preencha o seu nome completo antes de começar."); return; }
@@ -881,6 +881,7 @@
       });
     }
 
+    // LÓGICA DE SORTEIO DE PERGUNTA ÚNICA DIÁRIA POR COLABORADOR
     function getQuestionForUserToday(name, bank) {
       const today = new Date().toISOString().split('T')[0];
       const seedStr = `${name.toLowerCase().trim()}_${today}`;
@@ -942,14 +943,14 @@
       finishQuiz(false);
     }
 
-    // ATUALIZAÇÃO ACUMULATIVA E ÚNICA POR ANALISTA NO FIREBASE
+    // ATUALIZAÇÃO SEGURA E ACUMULATIVA SEM TRAVAMENTO
     function finishQuiz(timedOut = false) {
       clearInterval(timerInterval);
       if (timedOut && selectedOptionIndex !== null && selectedOptionIndex === activeQuizQuestions[currentQuestionIndex].correct) correctAnswersCount++;
 
       const novosPontos = correctAnswersCount * 10;
       const sanitisedKey = sanitizarChaveFirebase(userName);
-      const userRef = db.ref(`resultados_quiz_financeiro/${sanitizedKey}`);
+      const userRef = db.ref(`resultados_quiz_financeiro/${sanitisedKey}`);
 
       userRef.once('value', (snapshot) => {
         let pontosTotais = novosPontos;
@@ -979,45 +980,21 @@
       });
     }
 
-    // ORDENAÇÃO E EXIBIÇÃO ÚNICA NA TABELA SEM DUPLICAÇÃO DE NOMES
+    // EXIBIÇÃO ÚNICA E SEM DUPLICAÇÃO NA TABELA
     function listenPublicRankingData() {
       db.ref('resultados_quiz_financeiro').on('value', (snapshot) => {
         const tableBody = document.getElementById('public-ranking-table'); tableBody.innerHTML = '';
         if (!snapshot.exists()) { tableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">Nenhum resultado registrado ainda.</td></tr>`; return; }
 
-        const rawData = snapshot.val();
-        
-        // Se houver dados antigos no formato push (sem chave sanitizada de nome), limpa automaticamente para evitar duplicatas antigas
         let entries = [];
-        let needsCleanup = false;
-
-        Object.keys(rawData).forEach(key => {
-          const item = rawData[key];
+        snapshot.forEach((childSnapshot) => {
+          const item = childSnapshot.val();
           if (item && item.nome) {
-            // Se a chave no banco for diferente da chave sanitizada do nome, indica dado antigo empurrado por .push()
-            const expectedKey = sanitizarChaveFirebase(item.nome);
-            if (key !== expectedKey) {
-              needsCleanup = true;
-            }
             entries.push(item);
           }
         });
 
-        // Limpeza automática de IDs antigos baseados em .push() para manter apenas os registros consolidados
-        if (needsCleanup) {
-          let consolidated = {};
-          entries.forEach(item => {
-            const k = sanitizarChaveFirebase(item.nome);
-            // Mantém sempre o com maior pontuação ou data mais recente se houver conflito
-            if (!consolidated[k] || (item.scorePoints >= consolidated[k].scorePoints)) {
-              consolidated[k] = item;
-            }
-          });
-          db.ref('resultados_quiz_financeiro').set(consolidated);
-          return;
-        }
-
-        // Ordena por pontuação (maior primeiro) e maior tempo restante
+        // Ordenar por pontuação (maior primeiro) e maior tempo restante
         entries.sort((a, b) => b.scorePoints !== a.scorePoints ? b.scorePoints - a.scorePoints : (b.tempoRestanteSegundos || 0) - (a.tempoRestanteSegundos || 0));
 
         entries.forEach((entry) => {
@@ -1118,7 +1095,16 @@
         const tableBody = document.getElementById('admin-results-table'); tableBody.innerHTML = '';
         if (!snapshot.exists()) { tableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">Nenhum resultado registrado.</td></tr>`; return; }
 
-        const entries = Object.values(snapshot.val()).sort((a, b) => b.scorePoints !== a.scorePoints ? b.scorePoints - a.scorePoints : (b.tempoRestanteSegundos || 0) - (a.tempoRestanteSegundos || 0));
+        let entries = [];
+        snapshot.forEach((childSnapshot) => {
+          const item = childSnapshot.val();
+          if (item && item.nome) {
+            entries.push(item);
+          }
+        });
+
+        entries.sort((a, b) => b.scorePoints !== a.scorePoints ? b.scorePoints - a.scorePoints : (b.tempoRestanteSegundos || 0) - (a.tempoRestanteSegundos || 0));
+
         entries.forEach(entry => {
           const tr = document.createElement('tr'); tr.className = "hover:bg-slate-900/50 transition border-b border-slate-800";
           const pts = entry.scorePoints || 0; const notaColor = pts > 0 ? 'text-emerald-400' : 'text-red-400';
