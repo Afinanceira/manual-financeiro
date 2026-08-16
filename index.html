@@ -837,20 +837,52 @@
       return arr;
     }
 
-    // AJUSTADO: TRAVA DE 1 QUIZ POR DIA BASEADA NA DATA ATUAL DO SISTEMA
-    function hasTakenQuizToday(name) {
-      const today = new Date().toISOString().split('T')[0];
-      const key = `quiz_done_${name.toLowerCase().trim()}_${today}`;
-      return localStorage.getItem(key) === 'true';
+    // SANITIZAR NOME PARA CHAVE DO FIREBASE
+    function sanitizarChaveFirebase(nome) {
+      return nome.toLowerCase().trim().replace(/[.#$\/\[\]]/g, "_");
     }
 
-    function markQuizTakenToday(name) {
-      const today = new Date().toISOString().split('T')[0];
-      const key = `quiz_done_${name.toLowerCase().trim()}_${today}`;
-      localStorage.setItem(key, 'true');
+    // INICIAR QUIZ COM VERIFICAÇÃO DIRETA NO FIREBASE PELA DATA ATUAL
+    function startQuiz() {
+      const name = document.getElementById('user-name').value.trim();
+      if (!name) { alert("Por favor, preencha o seu nome completo antes de começar."); return; }
+
+      const sanitizedKey = sanitizarChaveFirebase(name);
+      const todayStr = new Date().toLocaleDateString('pt-BR'); // Ex: "16/08/2026"
+
+      db.ref(`resultados_quiz_financeiro/${sanitizedKey}`).once('value', (snapshot) => {
+        if (snapshot.exists()) {
+          const dados = snapshot.val();
+          // Verifica se a data da última resposta contém a data de hoje
+          if (dados.dataHora && dados.dataHora.startsWith(todayStr)) {
+            alert(`Atenção, ${name}! Você já realizou o quiz de hoje (${todayStr}).`);
+            return;
+          }
+        }
+
+        userName = name;
+        const selectedQuestion = getQuestionForUserToday(name, masterQuestionBank);
+        const shuffledOptions = shuffleArray(selectedQuestion.options);
+        activeQuizQuestions = [{
+          question: selectedQuestion.question,
+          options: shuffledOptions,
+          correct: shuffledOptions.indexOf(selectedQuestion.correctAnswerText)
+        }];
+
+        currentQuestionIndex = 0; 
+        correctAnswersCount = 0; 
+        timeRemaining = 30;
+
+        document.getElementById('quiz-start-box').classList.add('hidden');
+        document.getElementById('quiz-question-box').classList.remove('hidden');
+        document.getElementById('quiz-result-box').classList.add('hidden');
+
+        startTimer(); 
+        loadQuestion();
+      });
     }
 
-    // GERADOR DE PERGUNTA ÚNICA E VARIADA POR COLABORADOR E DIA (EVITA MESMA PERGUNTA E VAZAMENTO)
+    // GERADOR DE PERGUNTA ÚNICA E VARIADA POR COLABORADOR E DIA
     function getQuestionForUserToday(name, bank) {
       const today = new Date().toISOString().split('T')[0];
       const seedStr = `${name.toLowerCase().trim()}_${today}`;
@@ -861,33 +893,6 @@
       }
       const index = Math.abs(hash) % bank.length;
       return bank[index];
-    }
-
-    function startQuiz() {
-      const name = document.getElementById('user-name').value.trim();
-      if (!name) { alert("Por favor, preencha o seu nome completo antes de começar."); return; }
-      if (hasTakenQuizToday(name)) { alert(`Atenção, ${name}! Você já realizou o quiz de hoje.`); return; }
-
-      userName = name;
-      
-      // Sorteia 1 pergunta exclusiva para o colaborador no dia de hoje
-      const selectedQuestion = getQuestionForUserToday(name, masterQuestionBank);
-
-      const shuffledOptions = shuffleArray(selectedQuestion.options);
-      activeQuizQuestions = [{
-        question: selectedQuestion.question,
-        options: shuffledOptions,
-        correct: shuffledOptions.indexOf(selectedQuestion.correctAnswerText)
-      }];
-
-      currentQuestionIndex = 0; correctAnswersCount = 0; 
-      timeRemaining = 30; // 30 SEGUNDOS
-
-      document.getElementById('quiz-start-box').classList.add('hidden');
-      document.getElementById('quiz-question-box').classList.remove('hidden');
-      document.getElementById('quiz-result-box').classList.add('hidden');
-
-      startTimer(); loadQuestion();
     }
 
     function startTimer() {
@@ -939,23 +944,41 @@
       finishQuiz(false);
     }
 
+    // ATUALIZAÇÃO ACUMULATIVA NO FIREBASE USANDO A CHAVE DO NOME
     function finishQuiz(timedOut = false) {
       clearInterval(timerInterval);
       if (timedOut && selectedOptionIndex !== null && selectedOptionIndex === activeQuizQuestions[currentQuestionIndex].correct) correctAnswersCount++;
 
-      const totalScorePoints = correctAnswersCount * 10;
-      markQuizTakenToday(userName);
+      const novosPontos = correctAnswersCount * 10;
+      const sanitisedKey = sanitizarChaveFirebase(userName);
+      const userRef = db.ref(`resultados_quiz_financeiro/${sanitisedKey}`);
 
-      document.getElementById('quiz-question-box').classList.add('hidden');
-      document.getElementById('quiz-result-box').classList.remove('hidden');
-      document.getElementById('final-score').innerText = `${totalScorePoints} / 10 pts`;
+      userRef.once('value', (snapshot) => {
+        let pontosTotais = novosPontos;
+        if (snapshot.exists()) {
+          const dadosAnteriores = snapshot.val();
+          const pontosAntigos = dadosAnteriores.scorePoints || 0;
+          pontosTotais = pontosAntigos + novosPontos;
+        }
 
-      const payload = {
-        nome: userName, cargo: "Analista", scorePoints: totalScorePoints, acertos: correctAnswersCount,
-        totalQuestions: 1, tempoRestanteSegundos: Math.max(0, timeRemaining), tempoRestante: `${Math.max(0, timeRemaining)}s`,
-        timestamp: firebase.database.ServerValue.TIMESTAMP, dataHora: new Date().toLocaleString('pt-BR')
-      };
-      db.ref('resultados_quiz_financeiro').push(payload);
+        document.getElementById('quiz-question-box').classList.add('hidden');
+        document.getElementById('quiz-result-box').classList.remove('hidden');
+        document.getElementById('final-score').innerText = `${pontosTotais} pts (Total)`;
+
+        const payload = {
+          nome: userName, 
+          cargo: "Analista", 
+          scorePoints: pontosTotais, 
+          acertos: correctAnswersCount,
+          totalQuestions: 1, 
+          tempoRestanteSegundos: Math.max(0, timeRemaining), 
+          tempoRestante: `${Math.max(0, timeRemaining)}s`,
+          timestamp: firebase.database.ServerValue.TIMESTAMP, 
+          dataHora: new Date().toLocaleString('pt-BR')
+        };
+        
+        userRef.set(payload);
+      });
     }
 
     // ORDENAÇÃO: 1º PONTUAÇÃO (PONTOS) | 2º MAIOR TEMPO RESTANTE (SEGUNDOS)
