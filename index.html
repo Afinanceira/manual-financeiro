@@ -744,7 +744,7 @@
 
     </section>
 
-   <!-- ==================== TAB 6: QUIZ & PAINEL DE DESEMPENHO ==================== -->
+<!-- ==================== TAB 6: QUIZ & PAINEL DE DESEMPENHO ==================== -->
     <section id="tab-quiz" class="hidden space-y-8">
       <div id="quiz-start-box" class="card-dark p-8 rounded-2xl max-w-xl mx-auto space-y-6 gold-glow border border-purple-500/30">
         <div class="text-center space-y-2">
@@ -804,7 +804,7 @@
             <h3 class="font-bold text-white text-base flex items-center">
               <i class="fa-solid fa-users-viewfinder text-purple-400 mr-2"></i>Resultados dos Analistas
             </h3>
-            <p class="text-xs text-slate-400">Ordenado por pontuação (10 pts) e maior tempo restante em segundos</p>
+            <p class="text-xs text-slate-400">Ordenado por pontuação total e maior tempo restante em segundos</p>
           </div>
           <span class="text-xs bg-purple-900/50 text-purple-300 px-3 py-1 rounded-full border border-purple-500/30">Tempo Real</span>
         </div>
@@ -814,9 +814,9 @@
             <thead class="bg-slate-950 text-slate-400 uppercase font-semibold border-b border-slate-800">
               <tr>
                 <th class="p-4">Analista</th>
-                <th class="p-4">Pontuação</th>
+                <th class="p-4">Pontuação Total</th>
                 <th class="p-4">Tempo Restante (s)</th>
-                <th class="p-4">Data do Quiz</th>
+                <th class="p-4">Última Atualização</th>
               </tr>
             </thead>
             <tbody id="public-ranking-table" class="divide-y divide-slate-800">
@@ -956,7 +956,6 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // BANCO EXPANDIDO DE QUESTÕES DO MANUAL DO FINANCEIRO (DIVERGÊNCIA MÁXIMA)
     const masterQuestionBank = [
       {
         question: "[Protocolos Críticos & Compliance] Qual é o procedimento obrigatório ao identificar uma contestação de transação via Mecanismo Especial de Devolução (MED)?",
@@ -1110,7 +1109,7 @@
     }
 
     function sanitizarChaveFirebase(nome) {
-      return nome.toLowerCase().trim().replace(/[.#$\/\[\]]/g, "_");
+      return nome.toLowerCase().trim().replace(/[^a-z0-9]/g, "_");
     }
 
     function startQuiz() {
@@ -1123,7 +1122,7 @@
       db.ref(`resultados_quiz_financeiro/${sanitizedKey}`).once('value', (snapshot) => {
         if (snapshot.exists()) {
           const dados = snapshot.val();
-          if (dados.dataHora && dados.dataHora.startsWith(todayStr)) {
+          if (dados.ultimaData === todayStr) {
             alert(`Atenção, ${name}! Você já realizou o quiz de hoje (${todayStr}).`);
             return;
           }
@@ -1140,7 +1139,7 @@
 
         currentQuestionIndex = 0; 
         correctAnswersCount = 0; 
-        timeRemaining = 40;
+        timeRemaining = 30;
 
         document.getElementById('quiz-start-box').classList.add('hidden');
         document.getElementById('quiz-question-box').classList.remove('hidden');
@@ -1151,7 +1150,6 @@
       });
     }
 
-    // Algoritmo de Hash Diário (nome do analista + data atual) para garantir divergência máxima
     function getQuestionForUserToday(name, bank) {
       const today = new Date().toISOString().split('T')[0];
       const seedStr = `${name.toLowerCase().trim()}_${today}`;
@@ -1220,6 +1218,7 @@
       const novosPontos = correctAnswersCount * 10;
       const sanitisedKey = sanitizarChaveFirebase(userName);
       const userRef = db.ref(`resultados_quiz_financeiro/${sanitisedKey}`);
+      const todayStr = new Date().toLocaleDateString('pt-BR');
 
       userRef.once('value', (snapshot) => {
         let pontosTotais = novosPontos;
@@ -1241,6 +1240,7 @@
           totalQuestions: 1, 
           tempoRestanteSegundos: Math.max(0, timeRemaining), 
           tempoRestante: `${Math.max(0, timeRemaining)}s`,
+          ultimaData: todayStr,
           timestamp: firebase.database.ServerValue.TIMESTAMP, 
           dataHora: new Date().toLocaleString('pt-BR')
         };
@@ -1249,22 +1249,61 @@
       });
     }
 
+    // Função inteligente que lê do Firebase, unifica variações do mesmo nome e soma os pontos automaticamente
+    function processarEUnificarRanking(snapshot) {
+      let mapColaboradores = {};
+      snapshot.forEach((childSnapshot) => {
+        const item = childSnapshot.val();
+        if (item && item.nome) {
+          // Cria uma chave padrão baseada no nome limpo (ex: "tarcyla")
+          const chaveNormalizada = item.nome.trim().toLowerCase().replace(/[^a-z0-9]/g, "_");
+          
+          if (!mapColaboradores[chaveNormalizada]) {
+            // Se ainda não existe no mapa, inicializa com os dados do registro
+            mapColaboradores[chaveNormalizada] = {
+              nome: item.nome.trim(), // Mantém o nome legível original
+              scorePoints: Number(item.scorePoints) || 0,
+              tempoRestanteSegundos: Number(item.tempoRestanteSegundos) || 0,
+              tempoRestante: item.tempoRestante || '0s',
+              dataHora: item.dataHora || '',
+              timestamp: item.timestamp || 0
+            };
+          } else {
+            // Se já existe, acumula os pontos e atualiza para o registro mais recente (maior timestamp)
+            mapColaboradores[chaveNormalizada].scorePoints += (Number(item.scorePoints) || 0);
+            if ((item.timestamp || 0) > mapColaboradores[chaveNormalizada].timestamp) {
+              mapColaboradores[chaveNormalizada].tempoRestante = item.tempoRestante || mapColaboradores[chaveNormalizada].tempoRestante;
+              mapColaboradores[chaveNormalizada].tempoRestanteSegundos = item.tempoRestanteSegundos || mapColaboradores[chaveNormalizada].tempoRestanteSegundos;
+              mapColaboradores[chaveNormalizada].dataHora = item.dataHora || mapColaboradores[chaveNormalizada].dataHora;
+              mapColaboradores[chaveNormalizada].timestamp = item.timestamp || mapColaboradores[chaveNormalizada].timestamp;
+              // Mantém o nome formatado mais recente
+              mapColaboradores[chaveNormalizada].nome = item.nome.trim();
+            }
+          }
+        }
+      });
+
+      let entries = Object.values(mapColaboradores);
+      entries.sort((a, b) => b.scorePoints !== a.scorePoints ? b.scorePoints - a.scorePoints : (b.tempoRestanteSegundos || 0) - (a.tempoRestanteSegundos || 0));
+      return entries;
+    }
+
     function listenPublicRankingData() {
       db.ref('resultados_quiz_financeiro').on('value', (snapshot) => {
-        const tableBody = document.getElementById('public-ranking-table'); tableBody.innerHTML = '';
-        if (!snapshot.exists()) { tableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">Nenhum resultado registrado ainda.</td></tr>`; return; }
+        const tableBody = document.getElementById('public-ranking-table'); 
+        tableBody.innerHTML = '';
+        if (!snapshot.exists()) { 
+          tableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">Nenhum resultado registrado ainda.</td></tr>`; 
+          return; 
+        }
 
-        let entries = [];
-        snapshot.forEach((childSnapshot) => {
-          const item = childSnapshot.val();
-          if (item && item.nome) { entries.push(item); }
-        });
-
-        entries.sort((a, b) => b.scorePoints !== a.scorePoints ? b.scorePoints - a.scorePoints : (b.tempoRestanteSegundos || 0) - (a.tempoRestanteSegundos || 0));
+        let entries = processarEUnificarRanking(snapshot);
 
         entries.forEach((entry) => {
-          const tr = document.createElement('tr'); tr.className = "hover:bg-slate-900/50 transition border-b border-slate-800";
-          const pts = entry.scorePoints || 0; const notaColor = pts > 0 ? 'text-emerald-400' : 'text-red-400';
+          const tr = document.createElement('tr'); 
+          tr.className = "hover:bg-slate-900/50 transition border-b border-slate-800";
+          const pts = entry.scorePoints || 0; 
+          const notaColor = pts > 0 ? 'text-emerald-400' : 'text-red-400';
           tr.innerHTML = `<td class="p-4 font-semibold text-white">${entry.nome}</td><td class="p-4 font-bold ${notaColor}">${pts} pts</td><td class="p-4 font-mono text-amber-300 font-bold">${entry.tempoRestante || '0s'}</td><td class="p-4 text-slate-500">${entry.dataHora}</td>`;
           tableBody.appendChild(tr);
         });
@@ -1357,20 +1396,20 @@
 
     function listenAdminRealtimeData() {
       db.ref('resultados_quiz_financeiro').on('value', (snapshot) => {
-        const tableBody = document.getElementById('admin-results-table'); tableBody.innerHTML = '';
-        if (!snapshot.exists()) { tableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">Nenhum resultado registrado.</td></tr>`; return; }
+        const tableBody = document.getElementById('admin-results-table'); 
+        tableBody.innerHTML = '';
+        if (!snapshot.exists()) { 
+          tableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">Nenhum resultado registrado.</td></tr>`; 
+          return; 
+        }
 
-        let entries = [];
-        snapshot.forEach((childSnapshot) => {
-          const item = childSnapshot.val();
-          if (item && item.nome) { entries.push(item); }
-        });
-
-        entries.sort((a, b) => b.scorePoints !== a.scorePoints ? b.scorePoints - a.scorePoints : (b.tempoRestanteSegundos || 0) - (a.tempoRestanteSegundos || 0));
+        let entries = processarEUnificarRanking(snapshot);
 
         entries.forEach(entry => {
-          const tr = document.createElement('tr'); tr.className = "hover:bg-slate-900/50 transition border-b border-slate-800";
-          const pts = entry.scorePoints || 0; const notaColor = pts > 0 ? 'text-emerald-400' : 'text-red-400';
+          const tr = document.createElement('tr'); 
+          tr.className = "hover:bg-slate-900/50 transition border-b border-slate-800";
+          const pts = entry.scorePoints || 0; 
+          const notaColor = pts > 0 ? 'text-emerald-400' : 'text-red-400';
           tr.innerHTML = `<td class="p-4 font-semibold text-white">${entry.nome}</td><td class="p-4 font-bold ${notaColor}">${pts} pts</td><td class="p-4 font-mono text-amber-300 font-bold">${entry.tempoRestante || '0s'}</td><td class="p-4 text-slate-500">${entry.dataHora}</td>`;
           tableBody.appendChild(tr);
         });
